@@ -1,0 +1,17 @@
+Despliegue en Docker
+
+Logeo en heroku
+heroku login
+
+Creacion contenedor heroku
+heroku container:login:
+
+Push en heroku
+heroku container:push web --app nombre-app
+
+despliegue en heroku
+heroku container:release web --app nombre-app
+
+
+App desplegada
+https://{nombre-app}.herokuapp.com/
