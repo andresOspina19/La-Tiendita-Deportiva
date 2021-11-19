@@ -9,7 +9,6 @@ urlpatterns = [
   #  path('user/', views.UserCreateView.as_view()),
   #  path('user_all/', views.UserDetailView.as_view()),
     path('admin/', admin.site.urls),
-    path('test/', TestView.as_view()),
     path('accounts/', AccountListCreateView.as_view()),
     path('account/<int:pk>/', AccountRetrieveUpdateDeleteView.as_view())
 ]
