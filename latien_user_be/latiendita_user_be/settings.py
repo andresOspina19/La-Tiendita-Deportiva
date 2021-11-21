@@ -26,8 +26,7 @@ SECRET_KEY = '***REMOVED***'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-
+CORS_ALLOW_ALL_ORIGINS = True
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_auth',
     'latiendita_user_app',
     'django.contrib.sites',
     'allauth',
@@ -57,11 +57,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'latiendita_user_be.urls'
 
-#AUTH_USER_MODEL = 'latiendita_user_app.User'
+#AUTH_USER_MODEL = 'auth.User'
 
 TEMPLATES = [
     {
@@ -143,13 +144,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #import django_heroku
 #django_heroku.settings(locals())
 
-"""
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ),
     'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 
@@ -172,7 +174,7 @@ REST_FRAMEWORK = {
        'rest_framework.authentication.TokenAuthentication',
    )
 }
-
+"""
 #Heroku
 import django_heroku
 django_heroku.settings(locals())
