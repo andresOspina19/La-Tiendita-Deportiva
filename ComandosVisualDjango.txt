@@ -2,6 +2,9 @@ Comandos
 Comando creacion de ambiente de desarrollo
 python -m venv env
 
+Crear en environment
+env\Scripts\activate
+
 Instalar Django
 pip install django
 
@@ -19,9 +22,6 @@ pip install djangorestframework-simplejwt
 
 Instalar libreria de postgress
 pip install psycopg2
-
-Crear en environment
-env\Scripts\activate
 
 Instalar requirement
 pip install -r requirements.txt
