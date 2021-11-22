@@ -1,8 +1,6 @@
-from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.contrib.auth.hashers import make_password
 from django.db import models
-from django.contrib.auth.models import User
 
 class UserManager(BaseUserManager):
     def create_user(self, username, password=None):
@@ -28,16 +26,20 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
     
-class User(models.Model):
+class User(AbstractBaseUser, PermissionsMixin):
     id = models.BigAutoField(primary_key=True)
     username = models.CharField('Username', max_length = 15, unique=True)
     password = models.CharField('Password', max_length = 256)
     name = models.CharField('Name', max_length = 30)
     email = models.EmailField('Email', max_length = 100)
+    address = models.CharField('Address', max_length = 100)
+    phoneNumber = models.CharField('PhoneNumber', max_length = 20)
     is_active = models.BooleanField(default=True)
+    
     def save(self, **kwargs):
         some_salt = 'mMUj0DrIK6vgtdIYepkIxN' 
         self.password = make_password(self.password, some_salt)
         super().save(**kwargs)
     objects = UserManager()
+    
     USERNAME_FIELD = 'username'

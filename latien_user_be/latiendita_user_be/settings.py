@@ -168,6 +168,7 @@ SIMPLE_JWT = {
     'USER_ID_FIELD': 'id',
     'USER_ID_CLAIM': 'user_id',
 }
+
 """
 REST_FRAMEWORK = {
    'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -175,6 +176,7 @@ REST_FRAMEWORK = {
    )
 }
 """
+
 #Heroku
 import django_heroku
 django_heroku.settings(locals())
