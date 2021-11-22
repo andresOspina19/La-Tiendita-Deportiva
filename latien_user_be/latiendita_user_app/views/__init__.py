@@ -1,1 +1,2 @@
-from .accountViews import AccountListCreateView, AccountRetrieveUpdateDeleteView,UserCreateView
+from .accountViews import AccountListCreateView, AccountRetrieveUpdateDeleteView, UserCreateView
+from .verifyTokenView import VerifyTokenView
