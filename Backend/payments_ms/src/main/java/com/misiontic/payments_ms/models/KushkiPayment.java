@@ -7,15 +7,29 @@ public class KushkiPayment {
     @Id
     private String token;
     private String username;
-    private Long purchaseId;
+    private String purchaseId;
     private Amount amount;
+    private String status;
+    private String bankurl;
     private Date date;
 
-    public KushkiPayment(String token, Long userId, Long purchaseId, Amount amount, Date date) {
+    //Para el pago, a espera del status para confirmar que el pago fue exitoso
+    public KushkiPayment(String token, String username, String purchaseId, Amount amount, Date date) {
         this.token = token;
-        this.userId = userId;
+        this.username = username;
         this.purchaseId = purchaseId;
         this.amount = amount;
+        this.date = date;
+    }
+
+    //Para el pago con todos los datos
+    public KushkiPayment(String token, String username, String purchaseId, Amount amount, String status, String bankurl, Date date) {
+        this.token = token;
+        this.username = username;
+        this.purchaseId = purchaseId;
+        this.amount = amount;
+        this.status = status;
+        this.bankurl = bankurl;
         this.date = date;
     }
 
@@ -27,19 +41,19 @@ public class KushkiPayment {
         this.token = token;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public Long getPurchaseId() {
+    public String getPurchaseId() {
         return purchaseId;
     }
 
-    public void setPurchaseId(Long purchaseId) {
+    public void setPurchaseId(String purchaseId) {
         this.purchaseId = purchaseId;
     }
 
@@ -49,6 +63,22 @@ public class KushkiPayment {
 
     public void setAmount(Amount amount) {
         this.amount = amount;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getBankurl() {
+        return bankurl;
+    }
+
+    public void setBankurl(String bankurl) {
+        this.bankurl = bankurl;
     }
 
     public Date getDate() {
