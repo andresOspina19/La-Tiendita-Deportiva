@@ -1,6 +1,8 @@
 package com.misiontic.payments_ms.models;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+
 import java.util.Date;
 
 public class KushkiPayment {
@@ -13,16 +15,6 @@ public class KushkiPayment {
     private String bankurl;
     private Date date;
 
-    //Para el pago, a espera del status para confirmar que el pago fue exitoso
-    public KushkiPayment(String token, String username, String purchaseId, Amount amount, Date date) {
-        this.token = token;
-        this.username = username;
-        this.purchaseId = purchaseId;
-        this.amount = amount;
-        this.date = date;
-    }
-
-    //Para el pago con todos los datos
     public KushkiPayment(String token, String username, String purchaseId, Amount amount, String status, String bankurl, Date date) {
         this.token = token;
         this.username = username;

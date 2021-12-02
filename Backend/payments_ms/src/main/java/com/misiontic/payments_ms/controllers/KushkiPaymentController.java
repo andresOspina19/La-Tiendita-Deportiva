@@ -15,6 +15,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -34,16 +36,14 @@ public class KushkiPaymentController {
     KushkiPayment getKushkiPaymentByToken(@PathVariable String token){
         KushkiPayment payment = kushkiPaymentRepository.findById(token).orElseThrow(() -> new PaymentNotFoundException("No se encontro el pago con el token: " + token));
 
-        KushkiPaymentStatus paymentStatus = kushkiOperationsRepository.getPaymentStatus(token);
-
-        if (paymentStatus == null ) {
-            throw new PaymentNotFoundException("No se pudo verificar el estado del pago en Kushki con el token " + token );
+        //Si el pago está aprobado no es necesario verificarlo de nuevo en Kushki
+        if(payment.getStatus() == null) {
+            return kushkiPaymentRepository.save(checkStatusOfPayment(token, payment));
+        } else if(payment.getStatus().equals("approvedTransaction")) {
+            return payment;
+        } else {
+            return kushkiPaymentRepository.save(checkStatusOfPayment(token, payment));
         }
-
-        payment.setStatus( paymentStatus.getStatus() );
-        payment.setBankurl( paymentStatus.getBankurl() );
-
-        return kushkiPaymentRepository.save(payment);
     }
 
     @GetMapping("/getAllPaymentsByUsername/{username}")
@@ -53,6 +53,8 @@ public class KushkiPaymentController {
         if (payments == null){
             throw new PaymentNotFoundException("No se encontraron pagos con el username " + username );
         }
+
+        checkStatusOfPaymentsNotVerified(payments);
 
         return payments;
     }
@@ -72,26 +74,6 @@ public class KushkiPaymentController {
         return payments;
     }
 
-    @GetMapping("/getPaymentByPurchaseId/{purchaseId}")
-    KushkiPayment getKushkiPaymentByPurchaseId(@PathVariable String purchaseId){
-        KushkiPayment payment = kushkiPaymentRepository.findByPurchaseId(purchaseId);
-
-        if (payment == null){
-            throw new PaymentNotFoundException("No se encontró el pago con el ID de compra " + purchaseId );
-        }
-
-        KushkiPaymentStatus paymentStatus = kushkiOperationsRepository.getPaymentStatus(payment.getToken());
-
-        if (paymentStatus == null ) {
-            throw new PaymentNotFoundException("No se pudo verificar el estado del pago en Kushki con el token " + payment.getStatus() );
-        }
-
-        payment.setStatus( paymentStatus.getStatus() );
-        payment.setBankurl( paymentStatus.getBankurl() );
-
-        return kushkiPaymentRepository.save(payment);
-    }
-
     @PostMapping("/initPayment")
     KushkiURLGenerated initKushkiPayment(@RequestBody KushkiPayment kushkiPayment) {
         KushkiMakeTransactionRequest kushkiMakeTransactionRequest = new KushkiMakeTransactionRequest(kushkiPayment.getToken(), kushkiPayment.getAmount());
@@ -103,8 +85,49 @@ public class KushkiPaymentController {
         }
 
         //Almacenamos el pago sin status y sin bankurl
+        kushkiPayment.setDate(new Date());
         kushkiPaymentRepository.save(kushkiPayment);
 
         return kushkiURLGenerated;
+    }
+
+    private KushkiPayment checkStatusOfPayment(String token, KushkiPayment payment) {
+        KushkiPaymentStatus paymentStatus = kushkiOperationsRepository.getPaymentStatus(token).block();
+
+        if (paymentStatus == null ) {
+            throw new PaymentNotFoundException("No se pudo verificar el estado del pago en Kushki con el token " + token );
+        }
+
+        payment.setStatus( paymentStatus.getStatus() );
+        payment.setBankurl( paymentStatus.getBankurl() );
+
+        return payment;
+    }
+
+    private List<KushkiPayment> checkStatusOfPaymentsNotVerified(List<KushkiPayment> payments) {
+        List<Mono<KushkiPaymentStatus>> kushkiPaymentsStatusAsync = new ArrayList<>();
+
+        //Los pagos que aun no hayan sido verificados, se verifican
+        for (KushkiPayment payment:payments) {
+            if (payment.getStatus() == null) {
+                kushkiPaymentsStatusAsync.add(kushkiOperationsRepository.getPaymentStatus(payment.getToken()));
+            } else if (payment.getStatus().equals("approvedTransaction")) {
+                kushkiPaymentsStatusAsync.add(null);
+            }
+        }
+
+        for (int i = 0; i < kushkiPaymentsStatusAsync.size(); i++) {
+            if ( !(kushkiPaymentsStatusAsync.get(i) == null) ) {
+                KushkiPaymentStatus paymentStatus = kushkiPaymentsStatusAsync.get(i).block();
+
+                payments.get(i).setStatus( paymentStatus.getStatus() );
+                payments.get(i).setBankurl( paymentStatus.getBankurl() );
+
+                kushkiPaymentRepository.save(payments.get(i));
+            }
+
+        }
+
+        return payments;
     }
 }

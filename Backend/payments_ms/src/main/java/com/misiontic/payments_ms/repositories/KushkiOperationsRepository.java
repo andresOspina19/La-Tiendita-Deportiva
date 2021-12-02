@@ -19,27 +19,24 @@ public class KushkiOperationsRepository implements IKushkiOperationsRepository {
                 .uri("/init")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .header("private-merchant-id", "***REMOVED***")
-                .body(Mono.just(kushkiMakeTransactionRequest), KushkiURLGenerated.class)
+                .body(Mono.just(kushkiMakeTransactionRequest), KushkiMakeTransactionRequest.class)
                 .retrieve()
                 .bodyToMono(KushkiURLGenerated.class)
-                .share()
                 .block();
 
         return kushkiURLGenerated;
     }
 
     @Override
-    public KushkiPaymentStatus getPaymentStatus(String token) {
+    public Mono<KushkiPaymentStatus> getPaymentStatus(String token) {
         WebClient webClient = WebClient.create("https://api-uat.kushkipagos.com/transfer/v1");
 
-        KushkiPaymentStatus kushkiPaymentStatus = webClient.post()
+        Mono<KushkiPaymentStatus> kushkiPaymentStatus = webClient.get()
                 .uri("/status/" + token)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .header("private-merchant-id", "***REMOVED***")
                 .retrieve()
-                .bodyToMono(KushkiPaymentStatus.class)
-                .share()
-                .block();
+                .bodyToMono(KushkiPaymentStatus.class);
 
         return kushkiPaymentStatus;
     }
