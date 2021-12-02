@@ -4,11 +4,6 @@ public class KushkiPaymentStatus {
     private String status;
     private String bankurl;
 
-    public KushkiPaymentStatus(String status, String bankurl) {
-        this.status = status;
-        this.bankurl = bankurl;
-    }
-
     public String getStatus() {
         return status;
     }

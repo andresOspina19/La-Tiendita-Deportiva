@@ -8,6 +8,6 @@ import reactor.core.publisher.Mono;
 public interface IKushkiOperationsRepository {
 
     KushkiURLGenerated makeTransaction(KushkiMakeTransactionRequest kushkiMakeTransactionRequest);
-    KushkiPaymentStatus getPaymentStatus(String token);
+    Mono<KushkiPaymentStatus> getPaymentStatus(String token);
 
 }

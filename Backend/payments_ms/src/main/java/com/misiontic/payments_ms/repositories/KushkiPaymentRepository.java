@@ -6,5 +6,4 @@ import java.util.List;
 
 public interface KushkiPaymentRepository extends MongoRepository<KushkiPayment, String> {
     List<KushkiPayment> findByUsername (String username);
-    KushkiPayment findByPurchaseId (String purchaseId);
 }

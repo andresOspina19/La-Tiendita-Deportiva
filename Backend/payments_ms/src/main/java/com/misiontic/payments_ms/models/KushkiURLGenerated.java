@@ -4,11 +4,6 @@ public class KushkiURLGenerated {
     private String redirectUrl;
     private String transactionReference;
 
-    public KushkiURLGenerated(String redirectUrl, String transactionReference) {
-        this.redirectUrl = redirectUrl;
-        this.transactionReference = transactionReference;
-    }
-
     public String getRedirectUrl() {
         return redirectUrl;
     }
