@@ -8,18 +8,20 @@ const inventoryTypeDefs = gql `
         movement: String!
         modifyDate: String!
     }
-    
-    input InventoryInput {
+    input InventorySale {
         productId: String!
         stock: Int!
     }
-
+    input InventoryAdd {
+        productId: String!
+        stock: Int!
+    }
     extend type Query {
         inventoryByProducId(productId: String!): [Inventory]
-    }
-    
+    }  
     extend type Mutation {
-        createInventory(inventory: InventoryInput!): Inventory
+        createInventorySale(inventory: InventorySale!): Inventory
+        createInventoryAdd(inventory: InventoryAdd!): Inventory
     }
 `;
     //por qué tiene llaves y el de abajo no
