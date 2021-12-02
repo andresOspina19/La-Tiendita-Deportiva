@@ -5,14 +5,28 @@ const productTypeDefs = gql `
         productId: String!
         productName: String!
         imageURL: String!
-        price: double!
+        price: Float!
         stock: Int!
         description: String!
         category: String!
     }
-    
+
+    input ProductInput {
+        productId: String!
+        productName: String!
+        imageURL: String!
+        price: Float!
+        stock: Int!
+        description: String!
+        category: String!
+    }
+
     extend type Query {
-        productByProductId(productId: String!): Product
+        productByproductId(productId: String!): Product
+    }
+
+    extend type Mutation {
+        createProduct(product: ProductInput!): Product
     }
 `;
 

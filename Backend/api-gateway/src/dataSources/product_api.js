@@ -6,7 +6,7 @@ class ProductAPI extends RESTDataSource {
 
     constructor() {
         super();
-        this.baseURL = serverConfig.product_api_url;
+        this.baseURL = serverConfig.inventory_api_url;
     }
 
     async createProduct(product) {
@@ -17,20 +17,19 @@ class ProductAPI extends RESTDataSource {
     async productByProductId(productId) {
         return await this.get(`/products/${productId}`);
     }
+    
+    async inventoryByProductId(productId) {
+        return await this.get(`/inventory/${productId}`);
+    }
 
     async createInventorySale(inventory) {
         inventory = new Object(JSON.parse(JSON.stringify(inventory)));
         return await this.post('/inventorysale', inventory);
     }
-
     async createInventoryAdd(inventory) {
         inventory = new Object(JSON.parse(JSON.stringify(inventory)));
-        return await this.post('/inventorysadd', inventory);
-    }
-
-    async inventoryByProductId(productId) {
-        return await this.get(`/inventory/${productId}`);
+        return await this.post('/inventoryadd', inventory);
     }
 }
 
-module.exports = AccountAPI;
+module.exports = ProductAPI;
