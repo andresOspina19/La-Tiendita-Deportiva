@@ -11,8 +11,9 @@ public class Product{
     private Integer stock;
     private String description;
     private String category;
+    private int sales;
 
-    public Product(String productId, String productName, String imageURL, double price, Integer stock, String description, String category) {
+    public Product(String productId, String productName, String imageURL, double price, Integer stock, String description, String category, int sales) {
         this.productId = productId;
         this.productName = productName;
         this.imageURL = imageURL;
@@ -20,6 +21,7 @@ public class Product{
         this.stock = stock;
         this.description = description;
         this.category = category;
+        this.sales = sales;
     }
 
     public String getProductId() {
@@ -29,7 +31,7 @@ public class Product{
     public void setProductId(String productId) {
         this.productId = productId;
     }
-    
+
     public String getProductName() {
         return productName;
     }
@@ -46,11 +48,11 @@ public class Product{
         this.imageURL = imageURL;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -76,5 +78,13 @@ public class Product{
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public int getSales() {
+        return sales;
+    }
+
+    public void setSales(int sales) {
+        this.sales = sales;
     }
 }

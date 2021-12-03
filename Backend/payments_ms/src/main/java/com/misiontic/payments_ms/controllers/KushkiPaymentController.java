@@ -2,6 +2,7 @@ package com.misiontic.payments_ms.controllers;
 
 import com.misiontic.payments_ms.exceptions.KushkiPaymentNotInitializedException;
 import com.misiontic.payments_ms.exceptions.PaymentNotFoundException;
+import com.misiontic.payments_ms.exceptions.PaymentNotValidException;
 import com.misiontic.payments_ms.models.KushkiMakeTransactionRequest;
 import com.misiontic.payments_ms.models.KushkiPayment;
 import com.misiontic.payments_ms.models.KushkiPaymentStatus;
@@ -76,6 +77,14 @@ public class KushkiPaymentController {
 
     @PostMapping("/initPayment")
     KushkiURLGenerated initKushkiPayment(@RequestBody KushkiPayment kushkiPayment) {
+
+        //Si el pago es menor o igual a 0, no se permite la petición
+        if (kushkiPayment.getAmount().getIva() < 0
+         || kushkiPayment.getAmount().getSubtotalIva() < 0
+         || kushkiPayment.getAmount().getSubtotalIva0() <= 0) {
+            throw new PaymentNotValidException("El pago no es valido, el pago debe ser de una cantidad mayor a 0");
+        }
+
         KushkiMakeTransactionRequest kushkiMakeTransactionRequest = new KushkiMakeTransactionRequest(kushkiPayment.getToken(), kushkiPayment.getAmount());
 
         KushkiURLGenerated kushkiURLGenerated = kushkiOperationsRepository.makeTransaction(kushkiMakeTransactionRequest);
