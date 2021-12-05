@@ -1,4 +1,5 @@
 const { RESTDataSource } = require('apollo-datasource-rest');
+const { sortedUniq } = require('lodash');
 
 const serverConfig = require('../server');
 
@@ -16,6 +17,35 @@ class ProductAPI extends RESTDataSource {
 
     async productByProductId(productId) {
         return await this.get(`/products/${productId}`);
+    }
+
+    async productsByNameOrWithoutNameOrderedBySales(pagination) {
+        pagination = new Object(JSON.parse(JSON.stringify(pagination)));
+
+        let url = "https://latiendita-ms-inventory.herokuapp.com/productsByNameOrWithoutNameOrderedBySales";
+        let contador = 0;
+
+        if (pagination.productName != null) {
+            url += `?productName=${pagination.productName}`;
+            contador++;
+        }
+        if (pagination.page != null) {
+            if (contador == 0) {
+                url += `?page=${pagination.page}`;
+                contador++;
+            } else {
+                url += `&page=${pagination.page}`;
+            }
+        }
+        if (pagination.size != null) {
+            if (contador == 0) {
+                url += `?size=${pagination.size}`;
+                contador++;
+            } else {
+                url += `&size=${pagination.size}`;
+            }
+        }
+        return await this.get(url);
     }
     
     async inventoryByProductId(productId) {

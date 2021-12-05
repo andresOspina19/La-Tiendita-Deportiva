@@ -16,7 +16,7 @@ class AuthAPI extends RESTDataSource {
     }
 
     async getUser(userId) {
-        return await this.get(`/userRetrieveUpdateDelete/${userId}/`);
+        return await this.get(`/userRetrieveUpdateDelete/${userId}`);
     }
 
     async authRequest(credentials) {

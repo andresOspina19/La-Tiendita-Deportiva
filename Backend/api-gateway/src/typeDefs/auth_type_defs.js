@@ -22,13 +22,11 @@ const authTypeDefs = gql `
         email: String!
         address: String!
         phoneNumber: String!
-        is_active: Boolean!
     }
 
     type UserDetail {
         id: Int!
         username: String!
-        password: String!
         name: String!
         email: String!
         address: String!
@@ -46,7 +44,5 @@ const authTypeDefs = gql `
         userDetailById(userId: Int!): UserDetail!
     }
 `;
-
-    //preguntar por qué aparece el password acá
 
 module.exports = authTypeDefs;
