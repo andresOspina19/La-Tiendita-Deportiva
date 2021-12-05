@@ -4,11 +4,25 @@ const productTypeDefs = gql `
     type Product {
         productId: String!
         productName: String!
-        imageURL: String!
+        imageURL: String
         price: Float!
         stock: Int!
         description: String!
         category: String!
+        sales: Float!
+    }
+
+    type paginationProducts {
+        totalItems: Int!
+        totalPages: Int!
+        currentPage: Int!
+        products: [Product]!
+    }
+
+    input paginationProductsInput {
+        productName: String
+        page: Int
+        size: Int
     }
 
     input ProductInput {
@@ -23,6 +37,7 @@ const productTypeDefs = gql `
 
     extend type Query {
         productByproductId(productId: String!): Product
+        productsByNameOrWithoutNameOrderedBySales(pagination: paginationProductsInput): paginationProducts! 
     }
 
     extend type Mutation {
