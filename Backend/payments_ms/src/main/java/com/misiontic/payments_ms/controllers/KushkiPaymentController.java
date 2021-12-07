@@ -40,7 +40,9 @@ public class KushkiPaymentController {
         //Si el pago está aprobado no es necesario verificarlo de nuevo en Kushki
         if(payment.getStatus() == null) {
             return kushkiPaymentRepository.save(checkStatusOfPayment(token, payment));
-        } else if(payment.getStatus().equals("approvedTransaction")) {
+        } else if(payment.getStatus().equals("approvedTransaction") ) {
+            return payment;
+        } else if(payment.getStatus().equals("declinedTransaction") ) {
             return payment;
         } else {
             return kushkiPaymentRepository.save(checkStatusOfPayment(token, payment));
@@ -121,6 +123,8 @@ public class KushkiPaymentController {
             if (payment.getStatus() == null) {
                 kushkiPaymentsStatusAsync.add(kushkiOperationsRepository.getPaymentStatus(payment.getToken()));
             } else if (payment.getStatus().equals("approvedTransaction")) {
+                kushkiPaymentsStatusAsync.add(null);
+            } else if (payment.getStatus().equals("declinedTransaction")) {
                 kushkiPaymentsStatusAsync.add(null);
             }
         }
