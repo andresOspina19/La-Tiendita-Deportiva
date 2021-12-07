@@ -96,7 +96,7 @@ public class OrdersController {
         return new ResponseEntity<>(ordersList, HttpStatus.OK);
     }
 
-    @GetMapping("/order/getAllOrdersByOrderId/{orderId}")
+    @GetMapping("/order/getOrderByOrderId/{orderId}")
     public Orders getOrderById(@PathVariable String orderId) {
         Orders order = ordersRepository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException("No se encontró un pedido con el ID: " + orderId));
