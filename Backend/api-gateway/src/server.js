@@ -4,4 +4,7 @@ module.exports = {
 
     inventory_api_url: 
         'https://latiendita-ms-inventory.herokuapp.com',
+
+    pay_api_url: 
+        'https://latiendita-ms-payments.herokuapp.com',
 };
