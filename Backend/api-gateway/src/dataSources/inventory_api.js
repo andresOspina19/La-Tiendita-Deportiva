@@ -3,13 +3,14 @@ const { sortedUniq } = require('lodash');
 
 const serverConfig = require('../server');
 
-class ProductAPI extends RESTDataSource {
+class InventoryAPI extends RESTDataSource {
 
     constructor() {
         super();
         this.baseURL = serverConfig.inventory_api_url;
     }
 
+    //Metodos de productos
     async createProduct(product) {
         product = new Object(JSON.parse(JSON.stringify(product)));
         return await this.post('/products', product);
@@ -48,6 +49,7 @@ class ProductAPI extends RESTDataSource {
         return await this.get(url);
     }
     
+    //Metodos de inventario
     async inventoryByProductId(productId) {
         return await this.get(`/inventory/${productId}`);
     }
@@ -60,6 +62,39 @@ class ProductAPI extends RESTDataSource {
         inventory = new Object(JSON.parse(JSON.stringify(inventory)));
         return await this.post('/inventoryadd', inventory);
     }
+
+    //Metodos del carrito de compras
+    async addProductToCart(addToCartProductDto) {
+        addToCartProductDto = new Object(JSON.parse(JSON.stringify(addToCartProductDto)));
+        return await this.post('/cart/add', addToCartProductDto);
+    }
+
+    async UpdateProductOfCart(updateProductOfCartDto) {
+        updateProductOfCartDto = new Object(JSON.parse(JSON.stringify(updateProductOfCartDto)));
+        return await this.put('/cart/updateItem', updateProductOfCartDto);
+    }
+
+    async getCartByUsername(username) {   
+        return await this.get(`/cart/getItemsByUsername/${username}`);
+    }
+
+    async deleteProductOfCartByCartItemId(cartItemId) {   
+        return await this.delete(`/cart/deleteByItemId/${cartItemId}`);
+    }
+
+    //Metodos de los pedidos
+
+    async createOrderByUsername(UsernameAndPaymentToken) {
+        return await this.post(`/order/addOrderByUsername/${UsernameAndPaymentToken.username}?paymentToken=${UsernameAndPaymentToken.paymentToken}`);
+    }
+
+    async getOrderByOrderId(orderId) {   
+        return await this.get(`/order/getOrderByOrderId/${orderId}`);
+    }
+
+    async getAllOrdersByUsername(username) {   
+        return await this.get(`/order/getAllOrdersByUsername/${username}`);
+    }
 }
 
-module.exports = ProductAPI;
+module.exports = InventoryAPI;
