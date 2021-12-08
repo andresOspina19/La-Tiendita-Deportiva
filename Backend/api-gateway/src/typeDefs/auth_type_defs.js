@@ -22,7 +22,7 @@ const authTypeDefs = gql `
         email: String!
         address: String!
         phoneNumber: String!
-        is_active: Boolean!
+        is_active: Boolean
     }
 
     type UserDetail {
