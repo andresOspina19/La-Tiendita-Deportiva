@@ -4,16 +4,20 @@ const inventoryResolver = {
     Query: {
         productByproductId: async(_, { productId }, { dataSources, userIdToken }) => {
             if (productId == userIdToken)
-                return dataSources.productAPI.productByProductId(productId)
+                return dataSources.productAPI.productByProductId(productId);
             else
-                return dataSources.productAPI.productByProductId(productId)
+                return dataSources.productAPI.productByProductId(productId);
             },
         inventoryByProducId: async(_, { productId }, { dataSources, userIdToken }) => {
             if (productId == userIdToken)
-                return dataSources.productAPI.inventoryByProductId(productId)
+                return dataSources.productAPI.inventoryByProductId(productId);
             else
-                return dataSources.productAPI.inventoryByProductId(productId)
-            }
+                return dataSources.productAPI.inventoryByProductId(productId);
+            },
+        productsByNameOrWithoutNameOrderedBySales: async(_, { pagination }, { dataSources, userIdToken }) => {
+            return dataSources.productAPI.productsByNameOrWithoutNameOrderedBySales(pagination);
+        }, 
+
     },
     Mutation: {
         createProduct: async(_, { product }, { dataSources, userIdToken }) => {
