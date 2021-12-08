@@ -85,6 +85,7 @@ public class OrdersController {
         newOrder.setOrderProducts(orderProducts);
         ordersRepository.save(newOrder);
 
+        cartRepository.deleteByUsername(username);
         return new ResponseEntity<>(new ApiResponse(true, "El pedido se realizó exitosamente"), HttpStatus.CREATED);
     }
 
