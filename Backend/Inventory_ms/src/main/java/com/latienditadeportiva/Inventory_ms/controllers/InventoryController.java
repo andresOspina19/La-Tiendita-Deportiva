@@ -38,9 +38,6 @@ public class InventoryController {
 
         //Se descuentan los productos del stock
         product.setStock( product.getStock() - inventory.getStock() );
-        //Se suma la cantidad de productos comprados al contador de ventas del producto
-        product.setSales( product.getSales() + inventory.getStock() );
-        productRepository.save(product);
 
         inventory.setMovement("Salida");
         inventory.setModifyDate(new Date());
