@@ -1,9 +1,7 @@
 <template>
-
     <div class="logIn_user">
         <div class="container_logIn_user">
             <h2>Iniciar sesión</h2>
-
             <form v-on:submit.prevent="processLogInUser" >
                 <input type="text" v-model="user.username" placeholder="Usuario">
                 <br>
