@@ -4,7 +4,7 @@
       <div class = "logo">
         <img src = "@/assets/logo.svg" v-on:click="loadHome"/>
       </div>
-      <!--
+        <!--
       <div id="app" class="antialiased text-gray-900 flex flex-col min-h-screen bg-gray-200">
           <div class="flex justify-center items-center flex-1">
             <AppDropdown>
@@ -36,12 +36,12 @@
       <div>
         <nav class="nav-option">
           <div class="search">
-            <input type="text" v-model="buscar" class="form-control" placeholder="Buscar"/>
+            <input type="text" class="form-control" placeholder="Buscar"/>
           </div>
           <button v-if="!is_auth" v-on:click="loadLogIn"><img src="@/assets/user.svg"/></button>
-          <button v-if="is_auth" v-on:click="loadSignUp">Registrarse</button>
+          <button v-if="!is_auth" v-on:click="loadSignUp">Registrarse</button>
           <button v-if="is_auth" v-on:click="logOut">Cerrar Sesión</button>
-          <button v-if="!is_auth" v-on:click="loadCart"><img src="@/assets/cart.svg"/></button>
+          <button v-if="is_auth" v-on:click="loadCart"><img src="@/assets/cart.svg"/></button>
         </nav>
       </div>
     </header>
@@ -82,9 +82,11 @@
 /*import AppDropdown from "./components/AppDropdown.vue";
 import AppDropdownContent from "./components/AppDropdownContent.vue";
 import AppDropdownItem from "./components/AppDropdownItem.vue";*/
+
+import Swal from 'sweetalert2'
 export default {
   name: "App",
-  /*components: {
+   /*components: {
     AppDropdown,
     AppDropdownContent,
     AppDropdownItem
@@ -92,7 +94,7 @@ export default {
   computed: {
     is_auth: {
       get: function () {
-        return this.$route.meta.requiresAuth;
+        return this.$route.meta.is_auth;
       },
       set: function () {},
     },
@@ -111,18 +113,28 @@ export default {
       localStorage.setItem("username", data.username);
       localStorage.setItem("token_access", data.token_access);
       localStorage.setItem("token_refresh", data.token_refresh);
-      alert("Autenticación Exitosa");
+      Swal.fire({
+        text: "Autenticación Exitosa",
+        icon: "success"
+      });
+      this.loadHome();
     },
     completedSignUp: function (data) {
-      alert("Registro Exitoso");
+      Swal.fire({
+        text: "Registro Exitoso",
+        icon: "success"
+        })
       this.completedLogIn(data);
     },
     logOut: function () {
       localStorage.clear();
-      alert("Sesión Cerrada");
+      Swal.fire({
+        text: "Sesión Cerrada",
+        icon: "success"
+      });
       this.loadLogIn();
     },
-  },
+  }
 };
 </script>
 
@@ -221,5 +233,4 @@ footer {
 el-dropdown {
   border: 0px solid #FF2850;
 }
-
 </style>

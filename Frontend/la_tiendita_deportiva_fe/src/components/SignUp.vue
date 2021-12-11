@@ -33,6 +33,7 @@
 
 <script>
 import gql from "graphql-tag";
+import Swal from 'sweetalert2';
 
 export default {
     name: "SignUp",
@@ -76,7 +77,10 @@ export default {
           this.$emit("completedSignUp", dataLogIn);
         })
         .catch((error) => {
-          alert("No se pudo realizar el registro.  Por favor, inténtelo de nuevo.");
+          Swal.fire({
+              text: "No se pudo realizar el registro.  Por favor, inténtelo de nuevo.",
+              icon: "error"
+            });
         });
     },
 

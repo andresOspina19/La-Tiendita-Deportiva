@@ -10,14 +10,13 @@
                 <button type="submit">Iniciar Sesión</button>
             </form>
         </div>
-
     </div>
-
 </template>
 
 
 <script>
 import gql from "graphql-tag";
+import Swal from 'sweetalert2';
 
 export default {
   name: "LogIn",
@@ -57,7 +56,10 @@ export default {
           this.$emit("completedLogIn", dataLogIn);
         })
         .catch((error) => {
-          alert("El email o la contraseña no son correctos. Por favor, inténtelo de nuevo.");
+            Swal.fire({
+              text: "Las Credenciales son Incorrectas",
+              icon: "error"
+            });
         });
     },
   },

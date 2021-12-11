@@ -6,11 +6,18 @@ import LogIn from './components/LogIn.vue'
 import SignUp from './components/SignUp.vue'
 import Home from './components/Home.vue'
 
-const routes = [{
-  path: '/',
+const routes = [
+  {
+    path: '/',
+    name: 'app',
+    component: App,
+    meta: {is_auth: null}
+  },
+  {
+  path: '/home',
   name: 'home',
   component: Home,
-  meta: { requiresAuth: false }
+  meta: { requiresAuth: false}
 },
 {
   path: '/user/logIn',
@@ -62,11 +69,14 @@ async function isAuth() {
     return false;
   }
 }
+
 router.beforeEach(async (to, from) => {
   var is_auth = await isAuth();
+  to.meta.is_auth = is_auth;
+  if (to.meta.requiresAuth == false) return true
   if (is_auth == to.meta.requiresAuth) return true
   if (is_auth) return { name: "home" };
-  return { name: "logIn" };
+  return { name: "home" };
 })
 
 export default router;
