@@ -4,7 +4,6 @@ const payTypeDefs = gql `
     type Paymenttoken {
         token: String!
         username: String!
-        purchaseId: String!
         amount: Amount!
         status: String!
         bankurl: String!
@@ -15,28 +14,31 @@ const payTypeDefs = gql `
         subtotalIva0: Float!
         iva: Float!
     }
-    type Transaccion{
+    type RedirectUrl {
         redirectUrl: String!
         transactionReference: String!
     }
-    input Payment {
-        token: String!
-        username: String!
-        purchaseId: String!
-        amount: Amountpay!
-    }
-    input Amountpay {
+    input AmountInput {
         subtotalIva: Float!
         subtotalIva0: Float!
         iva: Float!
     }
+    input Payment {
+        token: String!
+        username: String!
+        amount: AmountInput!
+    }
+
+    input PaymentByTokenInput {
+        username: String!
+        token: String!
+    }
+
     extend type Query {
-        getPaymentByToken(token: String!): Paymenttoken
-        getAllPaymentsByUsername(username: String!): [Paymenttoken]
-        getOnlyApprovedPaymentsByUsername(username: String!): [Paymenttoken]
+        getPaymentByToken(paymentByTokenInput: PaymentByTokenInput!): Paymenttoken
     }
     extend type Mutation {
-        initPayment(transaccion: Payment!): Transaccion!
+        initPayment(payment: Payment!): RedirectUrl!
     }
 `;
 

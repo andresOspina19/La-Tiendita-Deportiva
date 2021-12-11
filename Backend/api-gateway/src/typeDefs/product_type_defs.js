@@ -9,7 +9,7 @@ const productTypeDefs = gql `
         stock: Int!
         description: String!
         category: String!
-        sales: Float!
+        sales: Int!
     }
 
     type paginationProducts {

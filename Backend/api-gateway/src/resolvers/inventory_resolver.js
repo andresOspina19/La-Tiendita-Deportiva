@@ -4,18 +4,18 @@ const inventoryResolver = {
     Query: {
         productByproductId: async(_, { productId }, { dataSources, userIdToken }) => {
             if (productId == userIdToken)
-                return dataSources.productAPI.productByProductId(productId);
+                return dataSources.inventoryAPI.productByProductId(productId);
             else
-                return dataSources.productAPI.productByProductId(productId);
+                return dataSources.inventoryAPI.productByProductId(productId);
             },
         inventoryByProducId: async(_, { productId }, { dataSources, userIdToken }) => {
             if (productId == userIdToken)
-                return dataSources.productAPI.inventoryByProductId(productId);
+                return dataSources.inventoryAPI.inventoryByProductId(productId);
             else
-                return dataSources.productAPI.inventoryByProductId(productId);
+                return dataSources.inventoryAPI.inventoryByProductId(productId);
             },
         productsByNameOrWithoutNameOrderedBySales: async(_, { pagination }, { dataSources, userIdToken }) => {
-            return dataSources.productAPI.productsByNameOrWithoutNameOrderedBySales(pagination);
+            return dataSources.inventoryAPI.productsByNameOrWithoutNameOrderedBySales(pagination);
         }, 
 
     },
@@ -30,7 +30,7 @@ const inventoryResolver = {
                 description: product.description,
                 category: product.category
             }
-            return await dataSources.productAPI.createProduct(product);
+            return await dataSources.inventoryAPI.createProduct(product);
         },
         createInventorySale: async(_, { inventory }, { dataSources, userIdToken }) => {
             const inventorysale = {
@@ -40,7 +40,7 @@ const inventoryResolver = {
                 movement: inventory.movement,
                 modifyDate: inventory.modifyDate
             }
-            return await dataSources.productAPI.createInventorySale(inventory);
+            return await dataSources.inventoryAPI.createInventorySale(inventory);
         },
         createInventoryAdd: async(_, { inventory }, { dataSources, userIdToken }) => {
             const inventoryinput = {
@@ -50,7 +50,7 @@ const inventoryResolver = {
                 movement: inventory.movement,
                 modifyDate: inventory.modifyDate
             }
-            return await dataSources.productAPI.createInventoryAdd(inventory);
+            return await dataSources.inventoryAPI.createInventoryAdd(inventory);
         }
         
     }

@@ -9,16 +9,14 @@ public class KushkiPayment {
     @Id
     private String token;
     private String username;
-    private String purchaseId;
     private Amount amount;
     private String status;
     private String bankurl;
     private Date date;
 
-    public KushkiPayment(String token, String username, String purchaseId, Amount amount, String status, String bankurl, Date date) {
+    public KushkiPayment(String token, String username, Amount amount, String status, String bankurl, Date date) {
         this.token = token;
         this.username = username;
-        this.purchaseId = purchaseId;
         this.amount = amount;
         this.status = status;
         this.bankurl = bankurl;
@@ -39,14 +37,6 @@ public class KushkiPayment {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPurchaseId() {
-        return purchaseId;
-    }
-
-    public void setPurchaseId(String purchaseId) {
-        this.purchaseId = purchaseId;
     }
 
     public Amount getAmount() {

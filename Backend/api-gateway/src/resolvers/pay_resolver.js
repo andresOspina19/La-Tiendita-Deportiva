@@ -2,26 +2,31 @@ const { invertBy } = require("lodash");
 
 const payResolver = {
     Query: {
-        getPaymentByToken: async(_, { token }, { dataSources }) => {
-            return dataSources.payAPI.getPaymentByToken(token);
-        },
-        getAllPaymentsByUsername: async(_, { username }, { dataSources }) => {
-            return dataSources.payAPI.getAllPaymentsByUsername(username);
-        },
-        getOnlyApprovedPaymentsByUsername: async(_, { username }, { dataSources }) => {
-            return dataSources.payAPI.getOnlyApprovedPaymentsByUsername(username);
+        getPaymentByToken: async(_, { paymentByTokenInput }, { dataSources, userIdToken }) => {
+            usernameToken = (await dataSources.authAPI.getUser(userIdToken)).username;
+            if (paymentByTokenInput.username == usernameToken)
+                return dataSources.payAPI.getPaymentByToken(paymentByTokenInput);
+            else
+                return null;
         }
     },
     Mutation: {
-        initPayment: async(_, { transaccion }, { dataSources }) => {
-            const payinput = {
-                token: transaccion.token,
-                username: transaccion.username,
-                purchaseId: transaccion.purchaseId,
-                Amount: transaccion.Amount
+        initPayment: async(_, { payment }, { dataSources, userIdToken }) => {
+            usernameToken = (await dataSources.authAPI.getUser(userIdToken)).username;
+
+            if (payment.username == usernameToken) {
+                let redirectUrl = dataSources.payAPI.initPayment(payment);
+                let UsernameAndPaymentToken = {
+                    username: payment.username,
+                    paymentToken: payment.token
+                };
+                dataSources.inventoryAPI.createOrderByUsername(UsernameAndPaymentToken);
+                return redirectUrl;
+            } else {
+                return null;
             }
-            return await dataSources.payAPI.initPayment(transaccion);
-        } 
+        },
+        
     }
 };
 

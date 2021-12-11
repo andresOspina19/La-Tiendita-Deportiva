@@ -10,12 +10,17 @@ class PayAPI extends RESTDataSource {
         this.baseURL = serverConfig.pay_api_url;
     }
 
-    async getPaymentByToken(token) {
-        return await this.get(`/getPaymentByToken/${token}`);
+    async getPaymentByToken(paymentByTokenInput) {
+        paymentByTokenInput = new Object(JSON.parse(JSON.stringify(paymentByTokenInput)));
+        return await this.get(`/getPaymentByToken/${paymentByTokenInput.token}?username=${paymentByTokenInput.username}`);
     }
 
     async getAllPaymentsByUsername(username) {
         return await this.get(`/getAllPaymentsByUsername/${username}`);
+    }
+
+    async getAllPayments() {
+        return await this.get(`/getAllPayments/`);
     }
 
     async getOnlyApprovedPaymentsByUsername(username) {
