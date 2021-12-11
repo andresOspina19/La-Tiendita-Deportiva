@@ -36,12 +36,15 @@
       <div>
         <nav class="nav-option">
           <div class="search">
-            <input type="text" class="form-control" placeholder="Buscar"/>
+            <form v-on:submit.prevent="searchProducts" >
+              <input type="text" class="form-control" v-model="search" placeholder="Buscar"/>
+            </form>
           </div>
           <button v-if="!is_auth" v-on:click="loadLogIn"><img src="@/assets/user.svg"/></button>
           <button v-if="!is_auth" v-on:click="loadSignUp">Registrarse</button>
-          <button v-if="is_auth" v-on:click="logOut">Cerrar Sesión</button>
           <button v-if="is_auth" v-on:click="loadCart"><img src="@/assets/cart.svg"/></button>
+          <button v-if="is_auth">Pedidos</button>
+          <button v-if="is_auth" v-on:click="logOut">Cerrar Sesión</button>
         </nav>
       </div>
     </header>
@@ -99,6 +102,11 @@ export default {
       set: function () {},
     },
   },
+  data: function() {
+    return {
+      search: null
+    };
+  },
   methods: {
     loadHome: function () {
       this.$router.push({ name: "home" });
@@ -134,6 +142,12 @@ export default {
       });
       this.loadLogIn();
     },
+    searchProducts: function () {
+      Swal.fire({
+        text: this.search,
+        icon: "success"
+      });
+    }
   }
 };
 </script>
