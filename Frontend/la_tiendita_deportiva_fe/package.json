@@ -13,7 +13,6 @@
     "@vue/apollo-option": "^4.0.0-alpha.16",
     "apollo-link-context": "^1.0.20",
     "core-js": "^3.6.5",
-    "element-plus": "^1.2.0-beta.5",
     "express": "^4.17.1",
     "graphql": "^16.1.0",
     "graphql-tag": "^2.12.6",

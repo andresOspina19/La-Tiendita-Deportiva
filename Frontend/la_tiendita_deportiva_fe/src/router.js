@@ -5,15 +5,15 @@ import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client/core
 import LogIn from './components/LogIn.vue'
 import SignUp from './components/SignUp.vue'
 import Home from './components/Home.vue'
-
+import Products from './components/Products.vue'
 const routes = [
-  {
-    path: '/',
-    name: 'app',
-    component: App,
-    meta: {is_auth: null}
-  },
-  {
+{
+  path: '/',
+  name: 'app',
+  component: App,
+  meta: {is_auth: null},
+},
+{
   path: '/home',
   name: 'home',
   component: Home,
@@ -31,6 +31,13 @@ const routes = [
   component: SignUp,
   meta: { requiresAuth: false }
 },
+{
+  path: '/products',
+  name: 'products',
+  component: Products,
+  meta: { requiresAuth: false},
+  props: true
+}
 ];
 
 const router = createRouter({
