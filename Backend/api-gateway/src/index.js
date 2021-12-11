@@ -1,17 +1,19 @@
 const { ApolloServer } = require('apollo-server');
 const typeDefs = require('./typeDefs');
 const resolvers = require('./resolvers');
-const ProductAPI = require('./dataSources/product_api');
+const InventoryAPI = require('./dataSources/inventory_api');
 const AuthAPI = require('./dataSources/auth_api');
 const PayAPI = require('./dataSources/pay_api');
 const authentication = require('./utils/authentication');
 
 const server = new ApolloServer({
-    context: authentication,
+    context: async ({ req }) => ({
+        userIdToken: await authentication( req ),
+    }),
     typeDefs,
     resolvers,
     dataSources: () => ({
-        productAPI: new ProductAPI(),
+        inventoryAPI: new InventoryAPI(),
         authAPI: new AuthAPI(),
         payAPI: new PayAPI(),
     }),

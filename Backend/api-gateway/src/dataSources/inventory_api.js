@@ -1,5 +1,5 @@
 const { RESTDataSource } = require('apollo-datasource-rest');
-const { sortedUniq } = require('lodash');
+const { sortedUniq, update } = require('lodash');
 
 const serverConfig = require('../server');
 
@@ -64,32 +64,51 @@ class InventoryAPI extends RESTDataSource {
     }
 
     //Metodos del carrito de compras
-    async addProductToCart(addToCartProductDto) {
-        addToCartProductDto = new Object(JSON.parse(JSON.stringify(addToCartProductDto)));
-        return await this.post('/cart/add', addToCartProductDto);
+    async addProductToCart(addToCartInput) {
+        addToCartInput = new Object(JSON.parse(JSON.stringify(addToCartInput)));
+        return await this.post('/cart/add', addToCartInput);
     }
 
-    async UpdateProductOfCart(updateProductOfCartDto) {
-        updateProductOfCartDto = new Object(JSON.parse(JSON.stringify(updateProductOfCartDto)));
-        return await this.put('/cart/updateItem', updateProductOfCartDto);
+    async UpdateProductOfCart(updateCartItem) {
+        updateCartItem = new Object(JSON.parse(JSON.stringify(updateCartItem)));
+        let username = updateCartItem.username;
+        delete updateCartItem.username;
+        return await this.put(`/cart/updateItem?username=${username}`, updateCartItem);
     }
 
     async getCartByUsername(username) {   
         return await this.get(`/cart/getItemsByUsername/${username}`);
     }
 
-    async deleteProductOfCartByCartItemId(cartItemId) {   
-        return await this.delete(`/cart/deleteByItemId/${cartItemId}`);
+    async deleteProductOfCartByCartItemId(deleteItemInput) {   
+        deleteItemInput = new Object(JSON.parse(JSON.stringify(deleteItemInput)));
+        return await this.delete(`/cart/deleteItemById/${deleteItemInput.cartItemId}?username=${deleteItemInput.username}`);
     }
 
     //Metodos de los pedidos
 
     async createOrderByUsername(UsernameAndPaymentToken) {
+        UsernameAndPaymentToken = new Object(JSON.parse(JSON.stringify(UsernameAndPaymentToken)));
         return await this.post(`/order/addOrderByUsername/${UsernameAndPaymentToken.username}?paymentToken=${UsernameAndPaymentToken.paymentToken}`);
     }
 
-    async getOrderByOrderId(orderId) {   
-        return await this.get(`/order/getOrderByOrderId/${orderId}`);
+    async ConfirmOrderIsPayed(confirmOrder) {
+        confirmOrder = new Object(JSON.parse(JSON.stringify(confirmOrder)));
+        return await this.put(`/order/confirmOrderIsPayed/`, confirmOrder);
+    }
+
+    async deleteOrderDeclined(orderDeclined) {
+        orderDeclined = new Object(JSON.parse(JSON.stringify(orderDeclined)));
+        return await this.delete(`/order/deleteOrderDeclined/`, orderDeclined);
+    }
+
+    async getOrderByOrderId(orderByIdInput) {   
+        orderByIdInput = new Object(JSON.parse(JSON.stringify(orderByIdInput)));
+        return await this.get(`/order/getOrderByOrderId/${orderByIdInput.orderId}?username=${orderByIdInput.username}`);
+    }
+
+    async getAllOrdersNotPayed() {   
+        return await this.get(`/order/getAllOrdersNotPayed/`);
     }
 
     async getAllOrdersByUsername(username) {   

@@ -1,6 +1,7 @@
 package com.misiontic.payments_ms.controllers;
 
 import com.misiontic.payments_ms.exceptions.KushkiPaymentNotInitializedException;
+import com.misiontic.payments_ms.exceptions.NotAuthorizedException;
 import com.misiontic.payments_ms.exceptions.PaymentNotFoundException;
 import com.misiontic.payments_ms.exceptions.PaymentNotValidException;
 import com.misiontic.payments_ms.models.KushkiMakeTransactionRequest;
@@ -34,8 +35,11 @@ public class KushkiPaymentController {
     }
 
     @GetMapping("/getPaymentByToken/{token}")
-    KushkiPayment getKushkiPaymentByToken(@PathVariable String token){
+    KushkiPayment getKushkiPaymentByToken(@PathVariable String token, @RequestParam String username){
         KushkiPayment payment = kushkiPaymentRepository.findById(token).orElseThrow(() -> new PaymentNotFoundException("No se encontro el pago con el token: " + token));
+
+        if (!payment.getUsername().equals(username))
+            throw new NotAuthorizedException("Usted no está autorizado para realizar esta accion");
 
         //Si el pago está aprobado no es necesario verificarlo de nuevo en Kushki
         if(payment.getStatus() == null) {
@@ -55,6 +59,19 @@ public class KushkiPaymentController {
 
         if (payments == null){
             throw new PaymentNotFoundException("No se encontraron pagos con el username " + username );
+        }
+
+        checkStatusOfPaymentsNotVerified(payments);
+
+        return payments;
+    }
+
+    @GetMapping("/getAllPayments/")
+    List<KushkiPayment> getAllKushkiPayments(){
+        List<KushkiPayment> payments = kushkiPaymentRepository.findAll();
+
+        if (payments == null){
+            throw new PaymentNotFoundException("No se encontraron pagos");
         }
 
         checkStatusOfPaymentsNotVerified(payments);

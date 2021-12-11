@@ -14,6 +14,7 @@ public class Orders {
     private String paymentToken;
     private Date createdDate;
     private Double totalPrice;
+    private boolean isPayed;
     private List<OrderProduct> orderProducts;
 
     public String getOrderId() {
@@ -54,6 +55,14 @@ public class Orders {
 
     public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public boolean isPayed() {
+        return isPayed;
+    }
+
+    public void setPayed(boolean payed) {
+        isPayed = payed;
     }
 
     public List<OrderProduct> getOrderProducts() {

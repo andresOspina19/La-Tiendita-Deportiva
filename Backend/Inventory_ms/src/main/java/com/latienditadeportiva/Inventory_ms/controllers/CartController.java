@@ -5,6 +5,7 @@ import com.latienditadeportiva.Inventory_ms.dto.cart.CartDto;
 import com.latienditadeportiva.Inventory_ms.dto.cart.CartItemDto;
 import com.latienditadeportiva.Inventory_ms.exceptions.CartItemNotExistException;
 import com.latienditadeportiva.Inventory_ms.exceptions.NoStockException;
+import com.latienditadeportiva.Inventory_ms.exceptions.NotAuthorizedException;
 import com.latienditadeportiva.Inventory_ms.exceptions.ProductNotFoundException;
 import com.latienditadeportiva.Inventory_ms.models.Cart;
 import com.latienditadeportiva.Inventory_ms.models.Product;
@@ -38,8 +39,22 @@ public class CartController {
         if (cartItem.getQuantity() <= 0)
             throw new NoStockException("La operacion no es valida");
 
-        cartRepository.save(cartItem);
-        return new ResponseEntity<ApiResponse>(new ApiResponse(true, "¡Añadido al carrito!"), HttpStatus.CREATED);
+        Cart existingCartItem = cartRepository.findByUsernameAndProductId(cartItem.getUsername(), cartItem.getProductId());
+        if (existingCartItem == null) {
+            cartRepository.save(cartItem);
+            return new ResponseEntity<ApiResponse>(new ApiResponse(true, "¡Añadido al carrito!"), HttpStatus.CREATED);
+        } else {
+
+            int newQuantity = existingCartItem.getQuantity() + cartItem.getQuantity();
+
+            if (newQuantity > product.getStock()) {
+                throw new NoStockException("No hay unidades en el inventario suficientes");
+            }
+
+            existingCartItem.setQuantity( newQuantity );
+            cartRepository.save(existingCartItem);
+            return new ResponseEntity<ApiResponse>(new ApiResponse(true, "¡Se actualizó el elemento en el carrito!"), HttpStatus.CREATED);
+        }
     }
 
     @GetMapping("/cart/getItemsByUsername/{username}")
@@ -72,7 +87,7 @@ public class CartController {
     }
 
     @PutMapping("/cart/updateItem")
-    public ResponseEntity<ApiResponse> updateCartItem(@RequestBody @Valid AddToCartDto cartDto) {
+    public ResponseEntity<ApiResponse> updateCartItem(@RequestBody @Valid AddToCartDto cartDto, @RequestParam String username) {
         Product product = productRepository.findById(cartDto.getProductId())
                 .orElseThrow(() -> new ProductNotFoundException("No se encontró un producto con el ID: " + cartDto.getProductId()));
 
@@ -84,6 +99,10 @@ public class CartController {
         Cart cart = cartRepository.findById(cartDto.getId())
                 .orElseThrow(() -> new CartItemNotExistException("No se encontró ese producto en el carrito"));
 
+        if (!cart.getUsername().equals(username)) {
+            throw new NotAuthorizedException("Usted no está autorizado para realizar esta accion");
+        }
+
         cart.setQuantity(cartDto.getQuantity());
         cart.setCreatedDate(new Date());
         cartRepository.save(cart);
@@ -91,11 +110,14 @@ public class CartController {
     }
 
     @DeleteMapping("/cart/deleteItemById/{cartItemId}")
-    public ResponseEntity<ApiResponse> deleteCartItem(@PathVariable String cartItemId) {
-        if (!cartRepository.existsById(cartItemId))
-            throw new CartItemNotExistException("No se encontró un producto en el carrito con id " + cartItemId);
+    public ResponseEntity<ApiResponse> deleteCartItem(@PathVariable String cartItemId, @RequestParam String username) {
+        Cart cartItem = cartRepository.findById(cartItemId)
+                .orElseThrow(() -> new CartItemNotExistException("No se encontró un producto en el carrito con id " + cartItemId));
 
-        cartRepository.deleteById(cartItemId);
+        if (!cartItem.getUsername().equals(username))
+            throw new NotAuthorizedException("Usted no está autorizado para realizar esta accion");
+
+        cartRepository.delete(cartItem);
         return new ResponseEntity<ApiResponse>(new ApiResponse(true, "El producto fue eliminado del carrito"), HttpStatus.OK);
     }
 }
