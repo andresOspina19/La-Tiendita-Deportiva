@@ -71,24 +71,24 @@ export default {
 
 // pendiente por modificar
 <style>
-
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap');
     .logIn_user{
         margin: 0;
         padding: 0%;
         height: 100%;
-        width: 100%;
-    
+        width: 100%;  
         display: flex;
         justify-content: center;
         align-items: center;
+        font-family:  comfortaa;
+        font-size: 100%;
     }
 
     .container_logIn_user {
         border: 3px solid  #283747;
         border-radius: 10px;
-        width: 25%;
-        height: 60%;
-        
+        width: auto;
+        height: auto;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -106,32 +106,33 @@ export default {
     }
 
     .logIn_user input{
-        height: 40px;
+        height: auto;
         width: 100%;
-
+        font-family: comfortaa;
+        font-size: 100%;
         box-sizing: border-box;
         padding: 10px 20px;
         margin: 5px 0;
-
         border: 1px solid #283747;
+        border-radius: 20px;
     }
 
     .logIn_user button{
         width: 100%;
-        height: 40px;
-
+        height: 100%;
+        font-family: comfortaa;
+        font-size: 100%;
         color: #E5E7E9;
         background: #283747;
         border: 1px solid #E5E7E9;
-
-        border-radius: 5px;
+        border-radius: 18px;
         padding: 10px 25px;
         margin: 5px 0;
     }
 
     .logIn_user button:hover{
         color: #E5E7E9;
-        background: crimson;
+        background: rgb(137, 176, 228);
         border: 1px solid #283747;
     }
 

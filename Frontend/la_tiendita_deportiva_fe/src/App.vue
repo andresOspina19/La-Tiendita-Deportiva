@@ -35,12 +35,14 @@
         -->
       <div>
         <nav class="nav-option">
-          <div class="search">
-            <form v-on:submit.prevent="searchProducts" >
+          <div>
+            <form class="search" v-on:submit.prevent="searchProducts" >
               <input type="text" class="form-control" v-model="search" placeholder="Buscar"/>
             </form>
           </div>
-          <button v-if="!is_auth" v-on:click="loadLogIn"><img src="@/assets/user.svg"/></button>
+          <button v-if="!is_auth" v-on:click="loadproducts">Productos</button>
+          <!--<button v-if="!is_auth" v-on:click="loadLogIn"><img src="@/assets/user.svg"/></button>-->
+          <button v-if="!is_auth" v-on:click="loadLogIn">Iniciar Sesión</button>
           <button v-if="!is_auth" v-on:click="loadSignUp">Registrarse</button>
           <button v-if="is_auth" v-on:click="loadCart"><img src="@/assets/cart.svg"/></button>
           <button v-if="is_auth">Pedidos</button>
@@ -64,17 +66,18 @@
       </div>
       <div class="footer-text">
         <div class="col1">
-              <h3 class="text-light font-weight-bold pb-2">Información</h3>
-              <a class="footer-link font-weight-light" href="#">Acerca de nosotros</a><br>
-              <a class="footer-link font-weight-light" href="#">Política de privacidad</a><br>
-              <a class="footer-link font-weight-light" href="#">Términos y condiciones</a><br>
+              <h3 class="text-light font-weight-bold pb-2">Puedes también:</h3>
+              <a class="footer-link font-weight-light" href="#" v-on:click="loadLogIn">Iniciar sesión</a><br><br>
+              <a class="footer-link font-weight-light" href="#" v-on:click="loadSignUp">Registrarte</a><br><br>
+              <a class="footer-link font-weight-light" href="#" v-on:click="loadproducts">Conoce nuestros productos</a><br><br>
         </div>
 
         <div class="col2">
               <h3 class="text-light font-weight-bold">Contáctanos</h3>
-              <a class="footer-link font-weight-light" href="#">Calle 11 #22-33</a><br>
-              <a class="footer-link font-weight-light" href="#">(+57 555-5555)</a><br>
-              <a class="footer-link font-weight-light" href="#">latienditadeportiva@gmail.com</a><br>
+              <a class="footer-link font-weight-light" href="#">Llamanos al:</a><br><br>
+              <a class="footer-link font-weight-light" href="#">(+57 555-5555)</a><br><br>
+              <a class="footer-link font-weight-light" href="#">O escribenos al:</a><br><br>
+              <a class="footer-link font-weight-light" href="#">latienditadeportiva@gmail.com</a><br><br>
         </div>
       </div>
     </footer>
@@ -147,7 +150,10 @@ export default {
         text: this.search,
         icon: "success"
       });
-    }
+    },
+    loadproducts: function () {
+      this.$router.push({ name: "products" });
+    },
   }
 };
 </script>
@@ -191,6 +197,8 @@ header {
   height: 8vh;
   justify-content: space-between;
   border: 0px solid #283747;
+  font-family:  comfortaa;
+  font-size: 100%;
 }
 
 header .nav-option {
@@ -201,25 +209,42 @@ header .nav-option {
 }
 
 header nav button {
-  color: black;
-  background: #FFFFFF;
-  border: 0px solid #e5e7e9;
-  border-radius: 7px;
-  font-size: 18px;
-  font-weight: 500;
+    background: #FFFFFF;
+    border: 0px solid;
+    border-radius: 7px;
+    padding: 5px 5px 5px 5px;
+    margin: 2px 7px 2px 4px;
+    font-family: comfortaa;
+    font-size: 100%;
 }
-
+.search{
+    border-radius: 10px;
+    height: auto;
+    font-family: comfortaa;
+    font-size: 100%;
+}
+.form-control{
+      border-radius: 10px;
+    height: auto;
+    font-family: comfortaa;
+    font-size: 100%;
+    margin: 0px 0px 0px 0px;
+    padding: 3px 0px 3px 10px;
+    border-color: #575353a3;
+    background-color: #f1efef66;
+}
 footer {
-  height: 13vh;
-  min-height: 100px;
-  background-color: #BCDDFE;
-  gap: 2rem;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  border: 0px solid #FF2850;
+  height: auto;
+    min-height: auto;
+    background: linear-gradient(45deg, #BCDDFE, #25232352);
+    gap: 2rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1px 0px 1px 0px;
+    margin: 20px 0px 10px 0px;
 }
-
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap');
 .footer-text {
   display: flex;
   justify-content: space-between;
@@ -228,6 +253,8 @@ footer {
   gap: 2rem;
   font-size: 18px;
   border: 0px solid #FF2850;
+  font-family:  comfortaa;
+    font-size: 100%;
 }
 
 .col1 .footer-link {
