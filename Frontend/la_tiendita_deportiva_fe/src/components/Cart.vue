@@ -32,7 +32,7 @@
             <div class="total">
                 <strong>TOTAL</strong>           <strong>{{this.convertToCOP( getUserCart.totalCost )}} COP</strong>
             </div>
-            <button id="checkout-button">Pagar</button>
+            <button id="checkout-button" v-on:click="loadPsePaymentForm">Pagar</button>
         </div>
     </div>  
 </template>
@@ -69,6 +69,17 @@ export default {
     },
 
     methods: {
+        loadPsePaymentForm: function () {
+            if (this.getUserCart.totalCost == 0) {
+                Swal.fire({
+                    text: "Primero debes tener productos en el carrito",
+                    icon: "error"
+                });
+            } else {
+                this.$router.push({ name: "psePaymentForm" });
+            }
+        },
+
         convertToCOP: function (precio) {
             const formatterPeso = new Intl.NumberFormat('es-CO', {
                     style: 'currency',
@@ -203,6 +214,10 @@ export default {
                 }
             }
         }
+    },
+
+    created: function () {
+        this.$apollo.queries.getUserCart.refetch();
     }
 }
 </script>

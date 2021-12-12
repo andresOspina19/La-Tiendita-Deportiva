@@ -10,6 +10,7 @@ import Products from './components/Products.vue'
 import ProductDetail from './components/ProductDetail.vue'
 import Cart from './components/Cart.vue'
 import Orders from './components/Orders.vue'
+import PsePaymentForm from './components/PsePaymentForm.vue'
 
 const routes = [
 {
@@ -58,7 +59,13 @@ const routes = [
   path: '/orders',
   name: 'orders',
   component: Orders,
-  meta: { requiresAuth: false}
+  meta: { requiresAuth: true}
+},
+{
+  path: '/psePaymentForm',
+  name: 'psePaymentForm',
+  component: PsePaymentForm,
+  meta: { requiresAuth: true}
 }
 ];
 
