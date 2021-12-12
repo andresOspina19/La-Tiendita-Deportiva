@@ -50,7 +50,7 @@ export default {
                     subtotalIva0: 0,
                     iva: 0
                 },
-                callbackUrl: "https://google.com",
+                callbackUrl: "https://latienditadeportiva.herokuapp.com/home",
                 userType: "0",
                 documentType: "CC",
                 documentNumber: "",

@@ -47,7 +47,7 @@ export default {
             email: "",
             address: "",
             phoneNumber: "",
-        },
+          },
         };
     },
 
@@ -68,12 +68,13 @@ export default {
           },
         })
         .then((result) => {
+          console.log("entro")
           let dataLogIn = {
             username: this.user.username,
             token_access: result.data.signUpUser.access,
             token_refresh: result.data.signUpUser.refresh,
           };
-
+        console.log("entro2")
           this.$emit("completedSignUp", dataLogIn);
         })
         .catch((error) => {
