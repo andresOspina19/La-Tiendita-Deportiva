@@ -120,6 +120,9 @@ export default {
     loadSignUp: function () {
       this.$router.push({ name: "signUp" });
     },
+    loadUserinfo: function () {
+      this.$router.push({ name: "user_info" });
+    },
     completedLogIn: function (data) {
       localStorage.setItem("username", data.username);
       localStorage.setItem("token_access", data.token_access);
@@ -128,7 +131,8 @@ export default {
         text: "Autenticación Exitosa",
         icon: "success"
       });
-      this.loadHome();
+      /*this.loadHome();*/
+      this.loadUserinfo();
     },
     completedSignUp: function (data) {
       Swal.fire({
@@ -143,6 +147,7 @@ export default {
         text: "Sesión Cerrada",
         icon: "success"
       });
+      /*this.loadLogIn();*/
       this.loadLogIn();
     },
     searchProducts: function () {
