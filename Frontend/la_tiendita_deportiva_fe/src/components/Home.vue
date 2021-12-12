@@ -26,4 +26,3 @@
       .banner .dj-text p{font-size: calc(1.2*1.5vw);}
    }
 </style>
-

@@ -6,17 +6,17 @@
       </div>
       <div>
         <nav class="nav-option">
-          <div>
-            <form class="search" v-on:submit.prevent="searchProducts" >
+          <div class="search">
+            <form v-on:submit.prevent="searchProducts" >
               <input type="text" class="form-control" v-model="search" placeholder="Buscar"/>
             </form>
           </div>
-          <button v-if="!is_auth" v-on:click="loadproducts">Productos</button>
+          <button v-on:click="loadProducts">Productos</button>
           <!--<button v-if="!is_auth" v-on:click="loadLogIn"><img src="@/assets/user.svg"/></button>-->
           <button v-if="!is_auth" v-on:click="loadLogIn">Iniciar Sesión</button>
           <button v-if="!is_auth" v-on:click="loadSignUp">Registrarse</button>
           <button v-if="is_auth" v-on:click="loadCart"><img src="@/assets/cart.svg"/></button>
-          <button v-if="is_auth">Pedidos</button>
+          <button v-if="is_auth" v-on:click="loadOrders">Pedidos</button>
           <button v-if="is_auth" v-on:click="logOut">Cerrar Sesión</button>
         </nav>
       </div>
@@ -82,6 +82,15 @@ export default {
     };
   },
   methods: {
+    loadOrders: function () {
+      this.$router.push({ name: "orders" });
+    },
+    loadCart: function () {
+      this.$router.push({ name: "cart" });
+    },
+    loadProducts: function () {
+      this.$router.push({ name: "products" });
+    },
     loadHome: function () {
       this.$router.push({ name: "home" });
     },
@@ -91,9 +100,6 @@ export default {
     loadSignUp: function () {
       this.$router.push({ name: "signUp" });
     },
-    loadUserinfo: function () {
-      this.$router.push({ name: "user_info" });
-    },
     completedLogIn: function (data) {
       localStorage.setItem("username", data.username);
       localStorage.setItem("token_access", data.token_access);
@@ -102,8 +108,7 @@ export default {
         text: "Autenticación Exitosa",
         icon: "success"
       });
-      /*this.loadHome();*/
-      this.loadUserinfo();
+      this.loadHome();
     },
     completedSignUp: function (data) {
       Swal.fire({
@@ -118,18 +123,11 @@ export default {
         text: "Sesión Cerrada",
         icon: "success"
       });
-      /*this.loadLogIn();*/
       this.loadLogIn();
     },
     searchProducts: function () {
-      Swal.fire({
-        text: this.search,
-        icon: "success"
-      });
-    },
-    loadproducts: function () {
-      this.$router.push({ name: "products" });
-    },
+      this.$router.push({name: 'products', query: {search: this.search, page: 0}});
+    }
   }
 };
 </script>
