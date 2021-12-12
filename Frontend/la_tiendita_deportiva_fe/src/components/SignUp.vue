@@ -19,7 +19,7 @@
 
                 <input type="text" v-model="user.address" placeholder="Dirección">
 
-                <input type="text" v-model="user.phoneNumber" placeholder="Número de télefono">
+                <input type="number" v-model="user.phoneNumber" placeholder="Número de télefono">
                 <br>
 
                 <button type="submit">Registrarse</button>
@@ -87,8 +87,6 @@ export default {
   },
 }
 </script>
-
-
 
 //Pendiente por modificar
 <style>
@@ -158,5 +156,4 @@ export default {
         background: rgb(137, 176, 228);
         border: 1px solid #283747;
     }
-
 </style>
