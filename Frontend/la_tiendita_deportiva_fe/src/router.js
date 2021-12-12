@@ -6,6 +6,7 @@ import LogIn from './components/LogIn.vue'
 import SignUp from './components/SignUp.vue'
 import Home from './components/Home.vue'
 import Products from './components/Products.vue'
+import user_info from './components/User.vue'
 const routes = [
 {
   path: '/',
@@ -35,6 +36,13 @@ const routes = [
   path: '/products',
   name: 'products',
   component: Products,
+  meta: { requiresAuth: false},
+  props: true
+},
+{
+  path: '/user_info',
+  name: 'user_info',
+  component: user_info,
   meta: { requiresAuth: false},
   props: true
 }

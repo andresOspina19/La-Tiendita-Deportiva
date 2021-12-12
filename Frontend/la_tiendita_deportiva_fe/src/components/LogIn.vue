@@ -13,7 +13,6 @@
     </div>
 </template>
 
-
 <script>
 import gql from "graphql-tag";
 import Swal from 'sweetalert2';
@@ -65,9 +64,6 @@ export default {
   },
 }
 </script>
-
-
-
 
 // pendiente por modificar
 <style>
