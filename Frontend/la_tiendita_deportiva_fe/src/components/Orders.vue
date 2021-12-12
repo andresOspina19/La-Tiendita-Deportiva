@@ -15,7 +15,9 @@
                 
                 <strong>orderId: </strong><span>{{transaccion.orderId}}</span><br>
                 <strong>Token de pago: </strong><span>{{transaccion.paymentToken}}</span><br><br>
+                <button class="ir_a_pago" type="submit" v-on:click="goToOrderdetail(transaccion.orderId)"><strong>Detalle de pedido</strong></button><br><br>
                 <strong>Fecha de creación: </strong><span>{{transaccion.createdDate}}</span><br>
+                
             <div v-for="order in transaccion.orderProducts" :key="order.orderId">
                 <strong>Product Id: </strong><span>{{ order.product.productId}}</span><br>
                 <strong>Producto: </strong><span>{{ order.product.productName}}</span><br>
@@ -49,6 +51,11 @@ export default {
                 createdDate: "",
             },
         };
+    },
+    methods: {
+        goToOrderdetail: function (orderId) {
+            this.$router.push({ name: 'Orderdetail', query: { id: orderId }});
+        },
     },
     apollo: {
     getAllOrdersByUsername: {
@@ -109,6 +116,41 @@ export default {
 
 //Pendiente por modificar
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap');
 
+  @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap');
+  .User_info{
+    padding: 10px; 
+    float: center; 
+    max-width: 90%; 
+    text-align: justify; 
+    font-size: 20px;
+    font-family:  comfortaa;
+    font-size: 100%;
+  }
+  .container_user_info{
+    padding: 10px; 
+    float: left; 
+    max-width: 45%; 
+    text-align: justify; 
+    font-size: 20px;
+    font-family:  comfortaa;
+    font-size: 100%;
+  }
+  .container_user_pays{
+    padding: 10px; 
+    float: right; 
+    max-width: 45%; 
+    text-align: justify; 
+    font-size: 20px;
+    font-family:  comfortaa;
+    font-size: 100%;
+  }
+  .ir_a_pago{
+    background: #2079b0;
+    background-image: -webkit-linear-gradient(top, #2079b0, #eb94d0);
+    background-image: -moz-linear-gradient(top, #2079b0, #eb94d0);
+    background-image: -ms-linear-gradient(top, #2079b0, #eb94d0);
+    background-image: -o-linear-gradient(top, #2079b0, #eb94d0);
+    background-image: linear-gradient(to bottom, #2079b0, #eb94d0);
+  }
 </style>
