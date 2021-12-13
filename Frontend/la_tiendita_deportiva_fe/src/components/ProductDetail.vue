@@ -35,7 +35,7 @@
             <div class="description">
                 <h1>Descripción</h1>
 
-                <p>
+                <p class="description-text">
                     {{productByproductId.description}}
                 </p>
             </div>
@@ -176,10 +176,10 @@ export default {
 .product {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(10rem, 30rem));
-    align-content: center;
     justify-items: center;
     justify-content: center;
-    align-items: stretch;
+    align-items: center;
+    align-content: center;
 }
 
 .productImg {
@@ -228,6 +228,10 @@ form.formAddToCart button strong {
 
 .right-side {
     margin: 2rem;
+}
+
+.description-text {
+    margin: 0rem 4rem;
 }
 
 </style>    

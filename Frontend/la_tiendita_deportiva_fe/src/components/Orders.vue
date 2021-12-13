@@ -7,25 +7,22 @@
                 <strong>Email: </strong><span>{{userDetailById.email}}</span><br>
                 <strong>Dirección: </strong><span>{{userDetailById.address}}</span><br>
                 <strong>Celular: </strong><span>{{userDetailById.phoneNumber}}</span><br>
-                <strong>Estado: </strong><span>{{userDetailById.is_active}}</span><br>
         </div>
         <div class="container_user_pays" >
             <h2 >Datos de transacciones</h2>
-            <div v-for="transaccion in getAllOrdersByUsername" :key="transaccion.orderId">
+            <div v-for="transaccion in getAllOrdersByUsername" :key="transaccion.orderId" class="order">
                 
-                <strong>orderId: </strong><span>{{transaccion.orderId}}</span><br>
-                <strong>Token de pago: </strong><span>{{transaccion.paymentToken}}</span><br><br>
-                <button class="ir_a_pago" type="submit" v-on:click="goToOrderdetail(transaccion.orderId)"><strong>Detalle de pedido</strong></button><br><br>
                 <strong>Fecha de creación: </strong><span>{{transaccion.createdDate}}</span><br>
+                <strong>ID del pedido: </strong><span>{{transaccion.orderId}}</span><br>
+                <button class="ir_a_pago" type="submit" v-on:click="goToOrderdetail(transaccion.orderId, transaccion.paymentToken)"><strong>Detalle de pedido</strong></button><br><br>
                 
-            <div v-for="order in transaccion.orderProducts" :key="order.orderId">
-                <strong>Product Id: </strong><span>{{ order.product.productId}}</span><br>
-                <strong>Producto: </strong><span>{{ order.product.productName}}</span><br>
-                <strong>Producto price: </strong><span>{{ order.product.price}}</span><br>
-                <strong>Cantidad solicitadas: </strong><span>{{ order.quantity}}</span><br>
-                <strong>Cantidad solicitadas: </strong><span>{{ order.price}}</span><br><br>
-                
-            </div>    
+                <div v-for="order in transaccion.orderProducts" :key="order.orderId">
+                    <strong>Producto: </strong><span>{{ order.product.productName}}</span><br>
+                    <strong>Cantidad solicitadas: </strong><span>{{ order.quantity}}</span><br>
+                    <br>
+                </div>
+
+                <strong>TOTAL: <strong id="price">{{this.convertToCOP(transaccion.totalPrice)}} COP</strong></strong>
             </div>
         </div>
     </div>
@@ -53,9 +50,18 @@ export default {
         };
     },
     methods: {
-        goToOrderdetail: function (orderId) {
-            this.$router.push({ name: 'Orderdetail', query: { id: orderId }});
+        goToOrderdetail: function (orderId, paymentToken) {
+          this.$router.push({ name: 'Orderdetail', query: { id: orderId, token: paymentToken }});
         },
+        convertToCOP: function (precio) {
+            const formatterPeso = new Intl.NumberFormat('es-CO', {
+                    style: 'currency',
+                    currency: 'COP',
+                    minimumFractionDigits: 0
+            });
+
+            return formatterPeso.format(precio);
+        }
     },
     apollo: {
     getAllOrdersByUsername: {
@@ -111,6 +117,11 @@ export default {
         },
         },
     },
+
+    created: function () {
+        this.$apollo.queries.userDetailById.refetch();
+        this.$apollo.queries.getAllOrdersByUsername.refetch();
+    }
 };
 </script>
 
@@ -126,25 +137,59 @@ export default {
     font-size: 20px;
     font-family:  comfortaa;
     font-size: 100%;
+    margin: 1.1rem;
   }
-  .container_user_info{
-    padding: 10px; 
-    float: left; 
-    max-width: 45%; 
-    text-align: justify; 
+
+ .container_user_info {
+    float: left;
+    max-width: 45%;
+    text-align: justify;
     font-size: 20px;
-    font-family:  comfortaa;
+    font-family: comfortaa;
     font-size: 100%;
-  }
-  .container_user_pays{
-    padding: 10px; 
-    float: right; 
-    max-width: 45%; 
-    text-align: justify; 
+    border-radius: 50px;
+    background: #ffffff;
+    box-shadow: 20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff;
+    margin: 1rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: stretch;
+}
+
+  .container_user_pays {
+    padding: 10px;
+    float: right;
+    max-width: 45%;
+    text-align: justify;
     font-size: 20px;
-    font-family:  comfortaa;
+    font-family: comfortaa;
     font-size: 100%;
-  }
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.order {
+    border-radius: 50px;
+    background: #ffffff;
+    box-shadow: 20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff;
+    margin: 1rem;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: stretch;
+}
+
   .ir_a_pago{
     background: #2079b0;
     background-image: -webkit-linear-gradient(top, #2079b0, #eb94d0);

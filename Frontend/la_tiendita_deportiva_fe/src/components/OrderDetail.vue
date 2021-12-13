@@ -2,27 +2,31 @@
     <div class="container">
 
         <div class= "information">
+
+            <div class="container-payed">
+                <h1 class= "price" id="order-total-price">PRECIO TOTAL PAGADO: {{this.convertToCOP(getOrderById.totalPrice)}}</h1>
+                <button id="go-to-kushki" v-on:click="goToKushki(getPaymentByToken.bankurl)"><strong>Ver pago en Kushki Pagos PSE</strong></button><br><br>
+            </div>
+
             <div class= "product">
-                <div v-for="order in getOrderById.orderProducts" :key="order.orderId">
+                <div v-for="order in getOrderById.orderProducts" :key="order.orderId" class="card">
                     <img class="productImg" :src="order.product.imageURL">
                     <div class= "right-side">
-                        <h4>
-                            Vendidos: {{order.product.sales}}
-                        </h4>
-                        
+
                         <h1>
                             {{order.product.productName}}
                         </h1>
 
-                        <h4>
-                            Categoría: {{order.product.category}}
-                        </h4>
+                        <h2 class="price">
+                            Pagado: {{this.convertToCOP( (order.price * order.quantity) )}} COP
+                        </h2>
 
-                        <h2 id="price">
-                            {{getOrderById.totalPrice}} COP
-                        </h2> 
+                        <h4>
+                            Unidades pedidas: {{order.quantity}}
+                        </h4> 
+
                         <h3>
-                            Precio individual: {{order.product.price}} unidades
+                            Precio individual: {{this.convertToCOP(order.product.price)}} COP
                         </h3> 
 
                     </div>   
@@ -55,8 +59,25 @@ export default {
             username: localStorage.getItem("username") || "none",
             /*orderId: localStorage.getItem("orderId") || "none",*/
             getOrderById: Object,
+            getPaymentByToken: Object,
         };
     },
+    methods: {
+        convertToCOP: function (precio) {
+            const formatterPeso = new Intl.NumberFormat('es-CO', {
+                    style: 'currency',
+                    currency: 'COP',
+                    minimumFractionDigits: 0
+            });
+
+            return formatterPeso.format(precio);
+        },
+        goToKushki: function(url) {
+          //Redireccionamos a la url de Kushki
+          window.location.replace(url);
+        },
+    },
+
     apollo: {
         getOrderById: {
             query: gql`
@@ -87,19 +108,57 @@ export default {
             `,
             variables() {
                 return {
-                    /*orderId: this.$route.query.id*/
                     orderByIdInput: {
                         orderId: this.$route.query.id,
                         username: this.username,
                     }
                 }
             }
+        },
+
+        getPaymentByToken: {
+            query: gql`
+                query ($paymentByTokenInput: PaymentByTokenInput!) {
+                    getPaymentByToken(paymentByTokenInput: $paymentByTokenInput) {
+                        bankurl
+                    }
+                }
+            `,
+            variables() {
+                return {
+                    paymentByTokenInput: {
+                        username: this.username,
+                        token: this.$route.query.token,
+                    }
+                }
+            }
         }
-    }
+    },
+
+    created: function () {
+        this.$apollo.queries.getOrderById.refetch();
+        this.$apollo.queries.getPaymentByToken.refetch();
+    },
 }
 </script>
 
 <style>
+#order-total-price {
+    text-align: center;
+}
+
+#go-to-kushki {
+        height: 40px;
+         color: #E5E7E9;
+        background: #283747;
+        border: 1px solid #E5E7E9;
+        border-radius: 18px;
+        padding: 10px 25px;
+        margin: 5px 0 25px 0;
+        font-family:  comfortaa;
+        font-size: 100%;
+    }
+
 .container {
     display: grid;
     justify-items: center;
@@ -171,9 +230,27 @@ form.formAddToCart button strong {
     margin: 2rem;
     display: flex;
     flex-direction: column;
-    align-content: flex-start;
+    align-content: center;
     flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: stretch;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.card {
+    margin: 2rem;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-payed {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-wrap: nowrap;
+    align-items: center;
 }
 </style>    

@@ -53,6 +53,7 @@ export default {
 
   methods: {
     processSignUp: async function() {
+      this.user.phoneNumber = this.user.phoneNumber + "";
       await this.$apollo
         .mutate({
           mutation: gql`
