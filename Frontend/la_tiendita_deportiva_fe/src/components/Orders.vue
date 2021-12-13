@@ -12,7 +12,7 @@
             <h2 >Datos de transacciones</h2>
             <div v-for="transaccion in getAllOrdersByUsername" :key="transaccion.orderId" class="order">
                 
-                <strong>Fecha de creación: </strong><span>{{transaccion.createdDate}}</span><br>
+                <strong>Fecha de creación: </strong><span>{{new Date(transaccion.createdDate).toLocaleDateString("es-CO")}}  -  {{new Date(transaccion.createdDate).toLocaleTimeString("es-CO")}}</span><br>
                 <strong>ID del pedido: </strong><span>{{transaccion.orderId}}</span><br>
                 <button class="ir_a_pago" type="submit" v-on:click="goToOrderdetail(transaccion.orderId, transaccion.paymentToken)"><strong>Detalle de pedido</strong></button><br><br>
                 

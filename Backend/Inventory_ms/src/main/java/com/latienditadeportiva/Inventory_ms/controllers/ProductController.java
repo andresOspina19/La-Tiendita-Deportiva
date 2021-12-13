@@ -39,7 +39,7 @@ public class ProductController {
             @RequestParam(defaultValue = "3") int size){
 
         List<Product> products = new ArrayList<>();
-        Pageable paging = PageRequest.of(page, size, Sort.by("sales").descending());
+        Pageable paging = PageRequest.of(page, size);
         Page<Product> pageProducts;
 
         if (productName == null)
@@ -62,6 +62,4 @@ public class ProductController {
     Product newProduct(@RequestBody Product product){
         return productRepository.save(product);
     }
-
-    
 }

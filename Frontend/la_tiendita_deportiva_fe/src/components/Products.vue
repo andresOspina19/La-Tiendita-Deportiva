@@ -101,6 +101,10 @@ export default {
             }      
         },
     },
+
+    created: function () {
+        this.$apollo.queries.productsByNameOrWithoutNameOrderedBySales.refetch();
+    }
 }
 </script>
 
@@ -134,8 +138,9 @@ export default {
     border-radius: 50px 50px 0px 0px;
 }
 
-.card-title{
+.card-title {
     color: rgba(34, 50, 99, 1);
+    text-align: center;
 }
 
 .price {
@@ -146,6 +151,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 1rem;
 }
 
 .container-pagination {
