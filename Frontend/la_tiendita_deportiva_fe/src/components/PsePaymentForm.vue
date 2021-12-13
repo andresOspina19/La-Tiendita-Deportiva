@@ -50,7 +50,7 @@ export default {
                     subtotalIva0: 0,
                     iva: 0
                 },
-                callbackUrl: "https://latienditadeportiva.herokuapp.com/home",
+                callbackUrl: "https://latienditadeportiva.herokuapp.com/orders",
                 userType: "0",
                 documentType: "CC",
                 documentNumber: "",

@@ -23,7 +23,7 @@
                         Stock disponible: {{productByproductId.stock}} unidades
                     </h3> 
 
-                    <form class="formAddToCart" v-on:submit.prevent="processAddToCart">
+                    <form class="formAddToCartt" v-on:submit.prevent="processAddToCart">
                         <div class="quantity">
                             <pre>Cantidad: </pre>
                             <input type="number" v-model="cantidad" min="1" :max="productByproductId.stock">
@@ -154,6 +154,10 @@ export default {
                 }
             }
         }
+    },
+
+    created: function () {
+        this.$apollo.queries.productByproductId.refetch();
     }
 }
 </script>
@@ -194,11 +198,11 @@ export default {
     color: rgba(64, 191, 255, 1);
 }
 
-form.formAddToCart {
+form.formAddToCartt {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-around;
+    align-items: center;
 }
 
 .quantity {
@@ -210,12 +214,20 @@ form.formAddToCart {
     align-items: center;
 }
 
-form.formAddToCart button {
-    background: #ebf3fc ;
-    border: 1px solid #33A0FF;
+form.formAddToCartt pre {
+    font-family: 'Readex Pro', sans-serif;
+    font-size: 1.2rem;
 }
 
-form.formAddToCart button strong {
+form.formAddToCartt button {
+    background: #ebf3fc;
+    border: 1px solid #33A0FF;
+    margin-left: 4rem;
+    height: 2.8rem;
+    width: 9rem;
+}
+
+form.formAddToCartt button strong {
     color: #33A0FF;
 }
 
