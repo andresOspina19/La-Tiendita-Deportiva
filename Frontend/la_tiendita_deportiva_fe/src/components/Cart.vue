@@ -128,7 +128,7 @@ export default {
                         message: result.data.updateCartItem.message,
                     };
 
-                    this.$router.go(this.$router.currentRoute);
+                    this.$apollo.queries.getUserCart.refetch();
                 })
                 .catch((error) => {
                     if ( (error + "").includes("409")) {
@@ -168,7 +168,8 @@ export default {
                         message: result.data.deleteCartItem.message,
                     };
 
-                    this.$router.go(this.$router.currentRoute);
+                    this.getUserCart = {};
+                    this.$apollo.queries.getUserCart.refetch();
                 })
                 .catch((error) => {
                     if ( (error + "").includes("409")) {
