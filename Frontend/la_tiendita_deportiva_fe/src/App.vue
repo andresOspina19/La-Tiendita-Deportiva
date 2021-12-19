@@ -16,7 +16,10 @@
           <!--<button v-if="!is_auth" v-on:click="loadLogIn"><img src="@/assets/user.svg"/></button>-->
           <button v-if="!is_auth" v-on:click="loadLogIn">Iniciar Sesión</button>
           <button v-if="!is_auth" v-on:click="loadSignUp">Registrarse</button>
-          <button v-if="is_auth" v-on:click="loadCart"><img src="@/assets/cart.svg"/></button>
+          <div id="cart" v-if="is_auth">
+            <span v-if="is_auth" id="nav-cart-count">{{ Object.keys(getUserCart.cartItems).length }}</span>
+            <button v-if="is_auth" v-on:click="loadCart"><img src="@/assets/cart.svg"/></button>
+          </div>
           <button v-if="is_auth" v-on:click="loadOrders">Pedidos</button>
           <button v-if="is_auth" v-on:click="logOut">Cerrar Sesión</button>
         </nav>
@@ -28,6 +31,7 @@
         v-on:completedLogIn="completedLogIn"
         v-on:completedSignUp="completedSignUp"
         v-on:logOut="logOut"
+        v-on:refreshCartCount="refreshCartCount"
       >
       </router-view>
     </main>
@@ -60,8 +64,9 @@
 /*import AppDropdown from "./components/AppDropdown.vue";
 import AppDropdownContent from "./components/AppDropdownContent.vue";
 import AppDropdownItem from "./components/AppDropdownItem.vue";*/
+import gql from "graphql-tag";
+import Swal from 'sweetalert2';
 
-import Swal from 'sweetalert2'
 export default {
   name: "App",
    /*components: {
@@ -75,11 +80,14 @@ export default {
         return this.$route.meta.is_auth;
       },
       set: function () {},
-    },
+    }
   },
   data: function() {
     return {
-      search: null
+      search: null,
+      getUserCart: {
+        cartItems: []
+      },
     };
   },
   methods: {
@@ -88,6 +96,9 @@ export default {
     },
     loadCart: function () {
       this.$router.push({ name: "cart" });
+    },
+    refreshCartCount: function() {
+      this.$apollo.queries.getUserCart.refetch();
     },
     loadProducts: function () {
       this.$router.push({ name: "products" });
@@ -128,8 +139,48 @@ export default {
     },
     searchProducts: function () {
       this.$router.push({name: 'products', query: {search: this.search, page: 0}});
-    }
-  }
+    },
+  },
+
+  apollo: {
+        getUserCart: {
+            query: gql`
+                query ($username: String!) {
+                    getUserCart(username: $username) {
+                        cartItems {
+                        product {
+                            productId
+                            productName
+                            imageURL
+                            price
+                            stock
+                            description
+                            category
+                            sales
+                        }
+                        id
+                        quantity
+                        }
+                        totalCost
+                    }
+                }
+            `,
+            variables() {
+                return {
+                    username: localStorage.getItem("username") || "none"
+                }
+            },
+            skip() {
+              return !this.$route.meta.is_auth;
+            }
+        }
+    },
+    mounted: function() {
+      this.$apollo.queries.getUserCart.refetch();
+    },
+    created: function () {
+      this.$apollo.queries.getUserCart.refetch();
+    }  
 };
 </script>
 
@@ -265,6 +316,21 @@ footer {
   text-decoration: none;
   color:  black;
   border: 0px solid #FF2850;
+}
+
+#nav-cart-count {
+  background-color: #5271FF;
+  color: white;
+  border-radius: 50%;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  font-size: 16px;
+  margin-left: 25px;
+  margin-top: 10px;
 }
 
 el-dropdown {

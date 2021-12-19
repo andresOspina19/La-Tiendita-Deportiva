@@ -109,6 +109,8 @@ export default {
                 },
             })
                 .then((result) => {
+                    this.$emit("refreshCartCount");
+
                     let dataAddToCart = {
                         success: result.data.addCartItem.success,
                         message: result.data.addCartItem.message,

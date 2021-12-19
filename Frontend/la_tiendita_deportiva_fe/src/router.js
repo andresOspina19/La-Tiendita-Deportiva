@@ -1,5 +1,6 @@
 import App from './App.vue'
 import gql from "graphql-tag";
+import jwt_decode from "jwt-decode";
 import { createRouter, createWebHistory } from "vue-router";
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client/core'
 
@@ -104,7 +105,9 @@ async function isAuth() {
         refresh: localStorage.getItem("token_refresh"),
       },
     })
+
     localStorage.setItem("token_access", result.data.refreshToken.access);
+
     return true;
   } catch {
     localStorage.clear();
