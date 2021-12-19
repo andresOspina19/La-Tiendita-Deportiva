@@ -127,7 +127,14 @@ public class KushkiPaymentController {
         }
 
         payment.setStatus( paymentStatus.getStatus() );
-        payment.setBankurl( paymentStatus.getBankurl() );
+
+        if (paymentStatus.getStatus().equals("approvedTransaction")) {
+            payment.setBankurl( paymentStatus.getBankurl().replace("?status=pending", "?status=approved") );
+        } else if (paymentStatus.getStatus().equals("declinedTransaction")) {
+            payment.setBankurl( paymentStatus.getBankurl().replace("?status=pending", "?status=declined") );
+        } else {
+            payment.setBankurl( paymentStatus.getBankurl() );
+        }
 
         return payment;
     }
@@ -151,7 +158,14 @@ public class KushkiPaymentController {
                 KushkiPaymentStatus paymentStatus = kushkiPaymentsStatusAsync.get(i).block();
 
                 payments.get(i).setStatus( paymentStatus.getStatus() );
-                payments.get(i).setBankurl( paymentStatus.getBankurl() );
+
+                if (paymentStatus.getStatus().equals("approvedTransaction")) {
+                    payments.get(i).setBankurl( paymentStatus.getBankurl().replace("?status=pending", "?status=approved") );
+                } else if (paymentStatus.getStatus().equals("declinedTransaction")) {
+                    payments.get(i).setBankurl( paymentStatus.getBankurl().replace("?status=pending", "?status=declined") );
+                } else {
+                    payments.get(i).setBankurl( paymentStatus.getBankurl() );
+                }
 
                 kushkiPaymentRepository.save(payments.get(i));
             }

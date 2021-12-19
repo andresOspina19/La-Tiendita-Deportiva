@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container" v-show="!isPaying">
         <div class="container-form">
             <img src="@/assets/pse.png">
             <h2>PAGO PSE</h2>
@@ -29,6 +29,10 @@
                 <button type="submit" :disabled='isPaying'>Pagar</button>
             </form>
         </div>
+    </div>
+    <div v-show="isPaying" class="paying">
+        <h2>Por favor espere</h2>
+        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
     </div>
 </template>
 
@@ -65,8 +69,21 @@ export default {
     },
     methods: {
         processKushkiPsePayment: async function(){
-            this.isPaying = true;
-            await this.getPaymentToken();
+            if (this.paymentForm.bankId === "0") {
+                Swal.fire({
+                    text: "Por favor, seleccione un banco",
+                    icon: "error",
+                });
+            } else if (this.getUserCart.totalCost > 0) {
+                this.isPaying = true;
+                await this.getPaymentToken();
+            } else {
+                 Swal.fire({
+                    text: "Primero debes tener productos en el carrito",
+                    icon: "error",
+                });
+                this.$router.push({ name: "products" });
+            }
         },
 
         getPaymentToken: async function() {
@@ -91,7 +108,8 @@ export default {
 
                 this.initPayment();
             })
-            .catch(function (error) {
+            .catch((error) => {
+                this.isPaying = false;
                 Swal.fire({
                     text: "Por favor, intentelo más tarde",
                     icon: "error"
@@ -131,6 +149,7 @@ export default {
                     text: error,
                     icon: "error"
                 });
+                this.isPaying = false;
             });
 
         },
@@ -148,8 +167,12 @@ export default {
             .then((response) => {
                 this.kushkiBanks = response.data;
             })
-            .catch(function (error) {
-                console.log(error);
+            .catch((error) => {
+                Swal.fire({
+                    text: "Por favor, intentelo más tarde",
+                    icon: "error"
+                });
+                this.$router.push({ name: "cart" });
             });
         },
         convertToCOP: function (precio) {
@@ -253,5 +276,54 @@ export default {
          color: #E5E7E9;
         background: rgb(137, 176, 228);
         border: 1px solid #283747;
+    }
+
+    .paying {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: center;
+        align-content: center;
+        justify-content: center;
+        height: 36rem;
+        width: 100%;
+    }
+
+    .paying h2 {
+        color: rgb(57, 134, 235);
+    }
+
+    .lds-ring {
+        width: 80px;
+        height: 80px;
+    }
+    .lds-ring div {
+        box-sizing: border-box;
+        display: block;
+        position: absolute;
+        width: 64px;
+        height: 64px;
+        margin: 8px;
+        border: 8px solid rgb(57, 134, 235);
+        border-radius: 50%;
+        animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        border-color: rgb(57, 134, 235) transparent transparent transparent;
+    }
+    .lds-ring div:nth-child(1) {
+        animation-delay: -0.45s;
+    }
+    .lds-ring div:nth-child(2) {
+        animation-delay: -0.3s;
+    }
+    .lds-ring div:nth-child(3) {
+        animation-delay: -0.15s;
+    }
+    @keyframes lds-ring {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
     }
 </style>

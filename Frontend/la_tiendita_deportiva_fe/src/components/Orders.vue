@@ -188,6 +188,8 @@ export default {
     align-content: center;
     justify-content: center;
     align-items: stretch;
+    min-width: 365px;
+    max-width: 365px;
 }
 
   .ir_a_pago{

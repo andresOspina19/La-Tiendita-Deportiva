@@ -7,8 +7,9 @@
       <div>
         <nav class="nav-option">
           <div class="search">
-            <form v-on:submit.prevent="searchProducts" >
+            <form v-on:submit.prevent="searchProducts" class="search-products">
               <input type="text" class="form-control" v-model="search" placeholder="Buscar"/>
+              <button type="submit" class="search-button"> <img src = "@/assets/search.jpg" class="search-img"> </button>
             </form>
           </div>
           <button v-on:click="loadProducts">Productos</button>
@@ -163,6 +164,27 @@ footer {
 .nav-option img {
   height: 3rem;
   width: 3rem;
+}
+
+button.search-button {
+    border-radius: 10px;
+    padding: 0rem;
+    display: flex;
+    margin-right: 1.6rem;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+form.search-products {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+img.search-img {
+    height: 1.5rem;
+    width: 1.5rem;
 }
 
 header {

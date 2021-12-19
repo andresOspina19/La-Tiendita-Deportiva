@@ -121,8 +121,8 @@ export default {
 }
 
 .card {
-    min-width:300px;
-    min-height:300px;
+    width: 305px;
+    min-height:410px;
     border-radius: 50px;
     background: #ffffff;
     box-shadow:  20px 20px 60px #d9d9d9,
@@ -130,12 +130,12 @@ export default {
 }
 
 .card-img-top {
-
     min-width:305px;
     min-height:305px;
     max-width:305px;
     max-height:305px;
     border-radius: 50px 50px 0px 0px;
+    object-fit: fill;
 }
 
 .card-title {
