@@ -187,10 +187,10 @@ export default {
 }
 
 .productImg {
-    border-radius: 60px;
-    height: 100%;
-    width: 100%;
-    object-fit: contain;
+    border-radius: 25px;
+    height: 300px;
+    width: 350px;
+    object-fit: fill;
     margin: 1rem;
 }
 

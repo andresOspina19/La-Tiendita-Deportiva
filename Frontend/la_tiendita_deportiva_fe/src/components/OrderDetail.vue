@@ -8,9 +8,9 @@
                 <button id="go-to-kushki" v-on:click="goToKushki(getPaymentByToken.bankurl)"><strong>Ver pago en Kushki Pagos PSE</strong></button><br><br>
             </div>
 
-            <div class= "product">
-                <div v-for="order in getOrderById.orderProducts" :key="order.orderId" class="card">
-                    <img class="productImg" :src="order.product.imageURL">
+            <div class= "product-o">
+                <div v-for="order in getOrderById.orderProducts" :key="order.orderId" class="card-o">
+                    <img class="productImg-o" :src="order.product.imageURL">
                     <div class= "right-side">
 
                         <h1>
@@ -173,7 +173,7 @@ export default {
              -20px -20px 60px #ffffff;
 }
 
-.product {
+.product-o {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(10rem, 30rem));
     align-content: center;
@@ -182,11 +182,11 @@ export default {
     align-items: stretch;
 }
 
-.productImg {
+.productImg-o {
     border-radius: 60px;
     height: 300px;
     width: 350px;
-    object-fit: contain;
+    object-fit: cover;
     margin: 1rem;
 }
 
@@ -236,7 +236,7 @@ form.formAddToCart button strong {
     align-items: flex-start;
 }
 
-.card {
+.card-o {
     margin: 2rem;
     display: flex;
     flex-direction: column;
@@ -244,6 +244,10 @@ form.formAddToCart button strong {
     align-content: center;
     justify-content: center;
     align-items: center;
+    border-radius: 50px;
+    background: #ffffff;
+    box-shadow:  20px 20px 60px #d9d9d9,
+             -20px -20px 60px #ffffff;
 }
 
 .container-payed {

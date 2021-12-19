@@ -252,6 +252,7 @@ export default {
     justify-content: flex-start;
     align-items: center;
     flex-direction: row;
+    gap: 1.5rem;
 }
 
 .delete-item-button {
