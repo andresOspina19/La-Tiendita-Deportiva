@@ -1,4 +1,10 @@
+MisionTIC2022 P53 Equipo 5 C4
+
 Proyecto la tiendita deportiva
+
+Profesor: 
+
+* Carlos Alfonso Gómez Hernández
 
 Integrantes:
 
@@ -9,9 +15,3 @@ Integrantes:
 * Karine Terán Enríquez / karineteran@gmail.com
 
 Proyecto enfocado en el desarrollo de una APP web para la comercialización de articulos deportivos
-
-
-
-
-
-
